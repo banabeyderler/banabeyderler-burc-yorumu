@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Banabeyderler - AI Chat & Burç Topluluğu</title>
+    <title>Banabeyderler - Burç Yorumları & Topluluk</title>
     <style>
         :root {
             --discord-dark: #36393f;
@@ -14,6 +14,8 @@
             --discord-green: #57f287;
             --discord-yellow: #fee75c;
             --level-purple: #9b59b6;
+            --space-blue: #38B2AC;
+            --space-purple: #6B46C1;
         }
 
         * {
@@ -49,7 +51,7 @@
         .server-icon {
             width: 48px;
             height: 48px;
-            background: linear-gradient(135deg, #6B46C1, #38B2AC);
+            background: linear-gradient(135deg, var(--space-purple), var(--space-blue));
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -154,6 +156,8 @@
             flex: 1;
             padding: 16px;
             overflow-y: auto;
+            display: flex;
+            flex-direction: column;
         }
 
         .message {
@@ -301,11 +305,11 @@
 
         /* AI MESAJ STİLİ */
         .ai-message .avatar {
-            background: linear-gradient(135deg, #6B46C1, #38B2AC);
+            background: linear-gradient(135deg, var(--space-purple), var(--space-blue));
         }
 
         .ai-message .username {
-            color: #38B2AC;
+            color: var(--space-blue);
         }
 
         /* CEO BADGE */
@@ -317,9 +321,82 @@
             font-size: 0.7rem;
             font-weight: bold;
         }
+
+        /* BURÇ YORUMU BÖLÜMÜ */
+        .horoscope-section {
+            background: var(--discord-darker);
+            margin: 16px;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid var(--space-blue);
+        }
+
+        .horoscope-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--space-blue);
+        }
+
+        .zodiac-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .zodiac-selector select {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background: #40444b;
+            color: var(--discord-text);
+        }
+
+        .generate-btn {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, var(--space-purple), var(--space-blue));
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .horoscope-result {
+            background: #40444b;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            min-height: 80px;
+        }
+
+        /* GİRİŞ BUTONLARI */
+        .auth-buttons {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .auth-btn {
+            padding: 10px 15px;
+            background: var(--discord-primary);
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
+    <!-- GİRİŞ BUTONLARI -->
+    <div class="auth-buttons">
+        <button class="auth-btn" onclick="showLoginModal()">Giriş Yap</button>
+    </div>
+
     <div class="discord-app">
         <!-- SOL SİDEBAR - SUNUCU KANALLARI -->
         <div class="server-sidebar">
@@ -370,63 +447,39 @@
                 <strong>genel-sohbet</strong>
             </div>
 
-            <div class="messages-container">
-                <!-- SİSTEM MESAJI -->
-                <div class="message">
-                    <div class="avatar">🤖</div>
-                    <div class="message-content">
-                        <div class="message-header">
-                            <span class="username" style="color: #38B2AC;">AI Asistan</span>
-                            <span class="level-badge">SEVİYE 99</span>
-                            <span class="timestamp">Bugün 14:30</span>
-                        </div>
-                        <div class="message-text">
-                            Burç topluluğuna hoş geldiniz! 🤗 AI asistanınız burada sorularınızı yanıtlamak için hazır.
-                        </div>
-                    </div>
+            <!-- BURÇ YORUMU BÖLÜMÜ -->
+            <div class="horoscope-section">
+                <div class="horoscope-title">♈ Günlük Burç Yorumu Al</div>
+                <div class="zodiac-selector">
+                    <select id="zodiacSelect">
+                        <option value="koç">♈ Koç (21 Mart - 19 Nisan)</option>
+                        <option value="boğa">♉ Boğa (20 Nisan - 20 Mayıs)</option>
+                        <option value="ikizler">♊ İkizler (21 Mayıs - 20 Haziran)</option>
+                        <option value="yengeç">♋ Yengeç (21 Haziran - 22 Temmuz)</option>
+                        <option value="aslan">♌ Aslan (23 Temmuz - 22 Ağustos)</option>
+                        <option value="başak">♍ Başak (23 Ağustos - 22 Eylül)</option>
+                        <option value="terazi">♎ Terazi (23 Eylül - 22 Ekim)</option>
+                        <option value="akrep">♏ Akrep (23 Ekim - 21 Kasım)</option>
+                        <option value="yay">♐ Yay (22 Kasım - 21 Aralık)</option>
+                        <option value="oğlak">♑ Oğlak (22 Aralık - 19 Ocak)</option>
+                        <option value="kova">♒ Kova (20 Ocak - 18 Şubat)</option>
+                        <option value="balık">♓ Balık (19 Şubat - 20 Mart)</option>
+                    </select>
+                    <button class="generate-btn" onclick="generateHoroscope()">Yorum Al</button>
                 </div>
+                <div class="horoscope-result" id="horoscopeResult">
+                    Burç seçip "Yorum Al" butonuna tıklayın...
+                </div>
+            </div>
 
-                <!-- KULLANICI MESAJI -->
-                <div class="message">
-                    <div class="avatar">AS</div>
-                    <div class="message-content">
-                        <div class="message-header">
-                            <span class="username">Abdullah Sarı</span>
-                            <span class="ceo-badge">CEO</span>
-                            <span class="level-badge">SEVİYE 85</span>
-                            <span class="timestamp">2 dakika önce</span>
-                        </div>
-                        <div class="message-text">
-                            Merhaba! Bugünkü burç yorumları hazır mı? Yengeç burcu için özel bir analiz var mı?
-                        </div>
-                        <!-- SEVİYE PROGRESS -->
-                        <div class="level-progress">
-                            <div class="level-progress-fill" style="width: 65%;"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- AI YANITI -->
-                <div class="message ai-message">
-                    <div class="avatar">🤖</div>
-                    <div class="message-content">
-                        <div class="message-header">
-                            <span class="username">AI Asistan</span>
-                            <span class="level-badge">SEVİYE 99</span>
-                            <span class="timestamp">Şimdi</span>
-                        </div>
-                        <div class="message-text">
-                            Merhaba CEO! 👑 Yengeç burcu için bugün: Duygusal anlamda derinleşiyorsunuz. Aile ve ev konularında önemli gelişmeler olabilir. 
-                            <br><br>
-                            <strong>+10 XP kazandınız!</strong> 🎉
-                        </div>
-                    </div>
-                </div>
+            <!-- MESAJLAR -->
+            <div class="messages-container" id="messagesContainer">
+                <!-- MESAJLAR BURAYA GELECEK -->
             </div>
 
             <!-- MESAJ GİRİŞ -->
             <div class="message-input-container">
-                <textarea class="message-input" placeholder="#genel-sohbet'e mesaj gönder..."></textarea>
+                <textarea class="message-input" id="messageInput" placeholder="#genel-sohbet'e mesaj gönder... (Enter ile gönder, Shift+Enter ile yeni satır)"></textarea>
             </div>
         </div>
 
@@ -436,31 +489,21 @@
                 <div class="section-title">Çevrimiçi — 1</div>
                 <div class="user-item">
                     <div class="user-status"></div>
-                    <div class="user-avatar">AS</div>
-                    <div class="user-name">Abdullah Sarı</div>
+                    <div class="user-avatar">👤</div>
+                    <div class="user-name">Misafir</div>
                 </div>
-            </div>
-
-            <div class="user-section">
-                <div class="section-title">Çevrimdışı — 1247</div>
-                <div class="user-item">
-                    <div class="user-status" style="background-color: #747f8d;"></div>
-                    <div class="user-avatar">MA</div>
-                    <div class="user-name">Moderator Ayşe</div>
-                </div>
-                <!-- Diğer kullanıcılar... -->
             </div>
 
             <!-- SEVİYE İLERLEME -->
             <div class="user-section">
                 <div class="section-title">Seviye İlerlemen</div>
                 <div style="text-align: center; padding: 8px;">
-                    <div style="font-size: 0.8rem; margin-bottom: 4px;">Seviye 85</div>
+                    <div style="font-size: 0.8rem; margin-bottom: 4px;">Seviye <span id="userLevel">1</span></div>
                     <div class="level-progress">
-                        <div class="level-progress-fill" style="width: 65%;"></div>
+                        <div class="level-progress-fill" id="levelProgress" style="width: 0%;"></div>
                     </div>
                     <div style="font-size: 0.7rem; color: #8e9297; margin-top: 4px;">
-                        125/300 XP
+                        <span id="currentXP">0</span>/<span id="maxXP">100</span> XP
                     </div>
                 </div>
             </div>
@@ -468,53 +511,265 @@
     </div>
 
     <script>
-        // SEVİYE SİSTEMİ - XP KAZANMA
-        let userXP = 125;
-        let userLevel = 85;
-        const xpForNextLevel = 300;
+        // SEVİYE SİSTEMİ
+        let userXP = 0;
+        let userLevel = 1;
+        let xpForNextLevel = 100;
 
-        function addXP(amount) {
-            userXP += amount;
-            
-            // Seviye atlama kontrolü
-            if (userXP >= xpForNextLevel) {
-                userLevel++;
-                userXP = userXP - xpForNextLevel;
-                showLevelUpAnimation();
-            }
-            
-            updateLevelDisplay();
-        }
-
-        function updateLevelDisplay() {
-            const progressFill = document.querySelector('.level-progress-fill');
-            const progressPercent = (userXP / xpForNextLevel) * 100;
-            progressFill.style.width = `${progressPercent}%`;
-        }
-
-        function showLevelUpAnimation() {
-            // Seviye atlama animasyonu buraya gelecek
-            console.log(`Tebrikler! Seviye ${userLevel} oldun! 🎉`);
-        }
-
-        // MESAJ GÖNDERME
-        const messageInput = document.querySelector('.message-input');
-        messageInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                const message = this.value.trim();
-                if (message) {
-                    // Mesaj gönderme işlemi
-                    addXP(5); // Her mesaj için +5 XP
-                    this.value = '';
-                }
-            }
-        });
+        // MESAJ SİSTEMİ
+        let messages = [];
 
         // SAYFA YÜKLENDİĞİNDE
         document.addEventListener('DOMContentLoaded', function() {
+            loadMessages();
             updateLevelDisplay();
+            
+            // MESAJ GİRİŞ EVENT
+            const messageInput = document.getElementById('messageInput');
+            messageInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
         });
+
+        // MESAJ GÖNDER
+        function sendMessage() {
+            const messageInput = document.getElementById('messageInput');
+            const messageText = messageInput.value.trim();
+            
+            if (messageText) {
+                // MESAJI EKLE
+                const message = {
+                    id: Date.now(),
+                    text: messageText,
+                    username: 'Misafir',
+                    timestamp: new Date(),
+                    level: userLevel
+                };
+                
+                messages.push(message);
+                saveMessages();
+                displayMessages();
+                
+                // XP KAZAN
+                addXP(5);
+                
+                // INPUT'U TEMİZLE
+                messageInput.value = '';
+                
+                // AI YANITI (basit simülasyon)
+                if (messageText.toLowerCase().includes('burç') || messageText.includes('?')) {
+                    setTimeout(() => {
+                        sendAIResponse(messageText);
+                    }, 1000);
+                }
+            }
+        }
+
+        // MESAJLARI GÖSTER
+        function displayMessages() {
+            const container = document.getElementById('messagesContainer');
+            container.innerHTML = '';
+            
+            messages.forEach(msg => {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message';
+                messageDiv.innerHTML = `
+                    <div class="avatar">${msg.username.charAt(0)}</div>
+                    <div class="message-content">
+                        <div class="message-header">
+                            <span class="username">${msg.username}</span>
+                            <span class="level-badge">SEVİYE ${msg.level}</span>
+                            <span class="timestamp">${formatTime(msg.timestamp)}</span>
+                        </div>
+                        <div class="message-text">${msg.text}</div>
+                    </div>
+                `;
+                container.appendChild(messageDiv);
+            });
+            
+            // EN AŞAĞI KAYDIR
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // AI YANITI GÖNDER
+        function sendAIResponse(userMessage) {
+            const aiResponses = [
+                "Burç yorumları için sağ üstteki generator'ü kullanabilirsin! ♈",
+                "Hangi burç hakkında yorum istiyorsun? 🔮",
+                "Günlük burç yorumu almak için yukarıdaki bölümden burcunu seç! ✨",
+                "Burç topluluğuna hoş geldin! Soruların için buradayım 🤗"
+            ];
+            
+            const randomResponse = aiResponses[Math.floor(Math.random() * aiResponses.length)];
+            
+            const aiMessage = {
+                id: Date.now(),
+                text: randomResponse,
+                username: 'AI Asistan',
+                timestamp: new Date(),
+                level: 99,
+                isAI: true
+            };
+            
+            messages.push(aiMessage);
+            saveMessages();
+            displayMessages();
+        }
+
+        // BURÇ YORUMU OLUŞTUR
+        function generateHoroscope() {
+            const zodiacSelect = document.getElementById('zodiacSelect');
+            const selectedZodiac = zodiacSelect.options[zodiacSelect.selectedIndex].text;
+            const resultDiv = document.getElementById('horoscopeResult');
+            
+            const horoscopes = {
+                koç: "♈ Koç: Bugün enerjin zirvede! Yeni projelere başlamak için mükemmel bir gün. Aşk hayatında sürprizler seni bekliyor.",
+                boğa: "♉ Boğa: Maddi konularda şanslısın. Sabırlı ol, beklediğin haber yakında gelecek. Sağlığına dikkat et.",
+                ikizler: "♊ İkizler: İletişim gücün zirvede! Önemli görüşmeler yap, fikirlerini paylaş. Sosyal çevren genişleyecek.",
+                yengeç: "♋ Yengeç: Duygusal anlamda derinleşiyorsun. Aile ve ev konularında önemli gelişmeler olabilir.",
+                aslan: "♌ Aslan: Yaratıcılığın ön planda! Kendini ifade et, sanatsal projelere yönel. İlham perisi seninle!",
+                başak: "♍ Başak: Detaylara odaklanmak için iyi bir gün. Organizasyon ve planlama yap, verimliliğin artacak.",
+                terazi: "♎ Terazi: İlişkilerde denge arayışındasın. Adil ol, uzlaşmacı yaklaşımın problemleri çözecek.",
+                akrep: "♏ Akrep: Gizemli enerjiler seninle. Sezgilerin güçlü, içgüdülerine güven. Derin konulara eğil.",
+                yay: "♐ Yay: Özgürlük arayışındasın! Yeni yerler keşfet, farklı kültürler öğren. Macera seni çağırıyor.",
+                oğlak: "♑ Oğlak: Kariyer odaklı bir gün. Hedeflerine odaklan, disiplinli çalış. Ödül yakında gelecek.",
+                kova: "♒ Kova: Yenilikçi fikirlerle dolu bir gün! Sosyal projelerde öncü ol, topluma katkı sağla.",
+                balık: "♓ Balık: Hayal gücün zirvede! Spiritüel konulara yönel, içsel keşifler yap. Sanatla ilgilen."
+            };
+            
+            const zodiacKey = zodiacSelect.value;
+            const horoscope = horoscopes[zodiacKey] || "Burç yorumu hazırlanıyor...";
+            
+            resultDiv.innerHTML = `
+                <strong>${selectedZodiac} için Günlük Yorum:</strong><br>
+                ${horoscope}
+                <div style="margin-top: 10px;">
+                    <button class="generate-btn" onclick="shareHoroscope('${selectedZodiac}', '${horoscope}')" style="font-size: 0.8rem; padding: 5px 10px;">Paylaş</button>
+                </div>
+            `;
+            
+            // XP KAZAN
+            addXP(10);
+        }
+
+        // BURÇ YORUMUNU PAYLAŞ
+        function shareHoroscope(zodiac, horoscope) {
+            const shareMessage = `♈ ${zodiac} yorumumu paylaşıyorum: ${horoscope.substring(0, 100)}...`;
+            
+            const message = {
+                id: Date.now(),
+                text: shareMessage,
+                username: 'Misafir',
+                timestamp: new Date(),
+                level: userLevel
+            };
+            
+            messages.push(message);
+            saveMessages();
+            displayMessages();
+            addXP(15);
+        }
+
+        // XP SİSTEMİ
+        function addXP(amount) {
+            userXP += amount;
+            
+            if (userXP >= xpForNextLevel) {
+                userLevel++;
+                userXP = userXP - xpForNextLevel;
+                xpForNextLevel = Math.floor(xpForNextLevel * 1.5);
+                
+                // SEVİYE ATLAMA MESAJI
+                const levelUpMessage = {
+                    id: Date.now(),
+                    text: `🎉 TEBRİKLER! Seviye ${userLevel} oldun!`,
+                    username: 'Sistem',
+                    timestamp: new Date(),
+                    level: userLevel,
+                    isSystem: true
+                };
+                
+                messages.push(levelUpMessage);
+                saveMessages();
+                displayMessages();
+            }
+            
+            updateLevelDisplay();
+            saveUserData();
+        }
+
+        function updateLevelDisplay() {
+            document.getElementById('userLevel').textContent = userLevel;
+            document.getElementById('currentXP').textContent = userXP;
+            document.getElementById('maxXP').textContent = xpForNextLevel;
+            
+            const progressPercent = (userXP / xpForNextLevel) * 100;
+            document.getElementById('levelProgress').style.width = `${progressPercent}%`;
+        }
+
+        // LOCALSTORAGE İŞLEMLERİ
+        function saveMessages() {
+            localStorage.setItem('banabeyderler_messages', JSON.stringify(messages));
+        }
+
+        function loadMessages() {
+            const saved = localStorage.getItem('banabeyderler_messages');
+            if (saved) {
+                messages = JSON.parse(saved);
+                displayMessages();
+            } else {
+                // İLK MESAJI EKLE
+                const welcomeMessage = {
+                    id: 1,
+                    text: 'Burç topluluğuna hoş geldin! 🤗 Burç yorumu almak için yukarıdaki generator\'ü kullanabilirsin.',
+                    username: 'AI Asistan',
+                    timestamp: new Date(),
+                    level: 99,
+                    isAI: true
+                };
+                messages = [welcomeMessage];
+                saveMessages();
+                displayMessages();
+            }
+        }
+
+        function saveUserData() {
+            const userData = {
+                xp: userXP,
+                level: userLevel,
+                xpForNextLevel: xpForNextLevel
+            };
+            localStorage.setItem('banabeyderler_user', JSON.stringify(userData));
+        }
+
+        function loadUserData() {
+            const saved = localStorage.getItem('banabeyderler_user');
+            if (saved) {
+                const userData = JSON.parse(saved);
+                userXP = userData.xp;
+                userLevel = userData.level;
+                xpForNextLevel = userData.xpForNextLevel;
+            }
+        }
+
+        // YARDIMCI FONKSİYONLAR
+        function formatTime(date) {
+            return new Date(date).toLocaleTimeString('tr-TR', { 
+                hour: '2-digit', 
+                minute: '2-digit' 
+            });
+        }
+
+        function showLoginModal() {
+            alert('Giriş sistemi yakında eklenecek! 🚀');
+        }
+
+        // İLK YÜKLEME
+        loadUserData();
+        updateLevelDisplay();
     </script>
 </body>
 </html>
