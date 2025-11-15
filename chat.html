@@ -3,269 +3,897 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Banabeyderler - AI Sohbet</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background: #1a1a2e;
-            color: white;
-            font-family: 'Arial', sans-serif;
-            height: 100vh;
-            display: flex;
-        }
-
-        /* ONLINE KULLANICILAR - LED PANEL */
-        .online-users {
-            width: 250px;
-            background: rgba(0, 0, 0, 0.7);
-            border-right: 2px solid #6B46C1;
-            padding: 20px;
-            overflow-y: auto;
-        }
-
-        .user-card {
-            background: rgba(107, 70, 193, 0.3);
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 10px;
-            border-left: 4px solid #38B2AC;
-        }
-
-        .user-online {
-            color: #38B2AC;
-            font-size: 0.8rem;
-        }
-
-        /* SOHBET ALANI */
-        .chat-container {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .chat-header {
-            background: rgba(0, 0, 0, 0.8);
-            padding: 20px;
-            border-bottom: 2px solid #6B46C1;
-            text-align: center;
-        }
-
-        .chat-messages {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        .message {
-            margin: 15px 0;
-            padding: 15px;
-            border-radius: 15px;
-            max-width: 70%;
-            animation: messageSlide 0.3s ease-out;
-        }
-
-        @keyframes messageSlide {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .user-message {
-            background: linear-gradient(135deg, #6B46C1, #38B2AC);
-            margin-left: auto;
-            border-bottom-right-radius: 5px;
-        }
-
-        .ai-message {
-            background: rgba(255, 255, 255, 0.1);
-            margin-right: auto;
-            border-bottom-left-radius: 5px;
-            border: 1px solid #6B46C1;
-        }
-
-        .message-sender {
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: #FFD700;
-        }
-
-        /* CHAT INPUT */
-        .chat-input-container {
-            display: flex;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.8);
-            border-top: 2px solid #6B46C1;
-        }
-
-        .chat-input {
-            flex: 1;
-            padding: 15px;
-            border: 2px solid #6B46C1;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            font-size: 1rem;
-        }
-
-        .send-btn {
-            background: linear-gradient(135deg, #6B46C1, #38B2AC);
-            color: white;
-            border: none;
-            padding: 15px 25px;
-            margin-left: 10px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        /* NAVIGATION */
-        .nav-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .nav-btn {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 8px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-        }
-    </style>
+    <title>Sohbet - CosmicChat</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- ONLINE KULLANICILAR -->
-    <div class="online-users">
-        <h3>🟢 ÇEVRİMİÇİ</h3>
-        <div id="onlineUsersList">
-            <!-- JavaScript ile doldurulacak -->
+    <div class="cosmic-bg">
+        <div class="stars"></div>
+        <div class="planets">
+            <div class="planet planet-1"></div>
+            <div class="planet planet-2"></div>
+            <div class="planet planet-3"></div>
         </div>
     </div>
 
-    <!-- SOHBET ALANI -->
     <div class="chat-container">
-        <div class="chat-header">
-            <h2>🤖 AI Burç Asistanı</h2>
-            <p>Burçlar hakkında sorularınızı sorun</p>
-        </div>
+        <!-- SIDEBAR -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <div class="logo-icon">🌌</div>
+                    <h2>COSMIC<span>CHAT</span></h2>
+                </div>
+                <button class="btn-menu" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
 
-        <div class="chat-messages" id="chatMessages">
-            <div class="message ai-message">
-                <div class="message-sender">AI Asistan:</div>
-                Merhaba! Burç yorumları ve astroloji hakkında sorularınızı yanıtlayabilirim. 🚀
+            <!-- KULLANICI PROFİLİ -->
+            <div class="user-profile">
+                <div class="user-avatar" id="userAvatar">👨‍🚀</div>
+                <div class="user-info">
+                    <h3 id="userName">Kullanıcı</h3>
+                    <p id="userHoroscope">Burç</p>
+                </div>
+                <button class="btn-logout" onclick="logout()" title="Çıkış Yap">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+
+            <!-- ONLINE KULLANICILAR -->
+            <div class="online-users">
+                <h4>🌠 Online Evrenler</h4>
+                <div class="users-list" id="usersList">
+                    <!-- Online kullanıcılar buraya eklenecek -->
+                </div>
+            </div>
+
+            <!-- BURÇ GRUPLARI -->
+            <div class="zodiac-groups">
+                <h4>🪐 Burç Grupları</h4>
+                <div class="groups-list">
+                    <div class="group-item" data-group="fire">
+                        <span class="group-icon">🔥</span>
+                        Ateş Grubu
+                    </div>
+                    <div class="group-item" data-group="earth">
+                        <span class="group-icon">🌍</span>
+                        Toprak Grubu
+                    </div>
+                    <div class="group-item" data-group="air">
+                        <span class="group-icon">💨</span>
+                        Hava Grubu
+                    </div>
+                    <div class="group-item" data-group="water">
+                        <span class="group-icon">💧</span>
+                        Su Grubu
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="chat-input-container">
-            <input type="text" class="chat-input" id="chatInput" placeholder="AI'ya soru sor...">
-            <button class="send-btn" onclick="sendMessage()">Gönder</button>
-        </div>
+        <!-- ANA SOHBET ALANI -->
+        <div class="chat-main">
+            <!-- CHAT HEADER -->
+            <div class="chat-header">
+                <div class="chat-info">
+                    <h3 id="chatTitle">Genel Sohbet</h3>
+                    <p id="onlineCount">0 kullanıcı online</p>
+                </div>
+                <div class="chat-actions">
+                    <button class="btn-action" title="Sohbeti Temizle" onclick="clearChat()">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                    <button class="btn-action" title="Ayarlar" onclick="showSettings()">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
+            </div>
 
-        <div style="padding: 15px; text-align: center;">
-            <div class="nav-buttons">
-                <a href="horoscope.html" class="nav-btn">♈ Burçlar</a>
-                <a href="index.html" class="nav-btn">🏠 Ana Sayfa</a>
-                <button class="nav-btn" onclick="logout()">🔓 Çıkış</button>
+            <!-- MESAJLAR ALANI -->
+            <div class="messages-container" id="messagesContainer">
+                <div class="welcome-message">
+                    <div class="welcome-icon">🚀</div>
+                    <h3>CosmicChat'e Hoş Geldin!</h3>
+                    <p>Evrendeki diğer ruhlarla sohbete başla...</p>
+                </div>
+                <!-- Mesajlar buraya eklenecek -->
+            </div>
+
+            <!-- MESAJ GİRİŞ ALANI -->
+            <div class="message-input-container">
+                <div class="input-group">
+                    <button class="btn-emoji" onclick="toggleEmojiPicker()">
+                        <i class="far fa-smile"></i>
+                    </button>
+                    <input type="text" id="messageInput" placeholder="Evrene mesajını yaz..." maxlength="500">
+                    <button class="btn-send" onclick="sendMessage()">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div class="emoji-picker" id="emojiPicker">
+                    <!-- Emojiler JavaScript ile eklenecek -->
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // ONLINE KULLANICILAR
-        const onlineUsers = [
-            { name: 'Abdullah', level: 15, isOnline: true },
-            { name: 'Ayşe', level: 8, isOnline: true },
-            { name: 'Mehmet', level: 12, isOnline: true },
-            { name: 'Zeynep', level: 5, isOnline: false }
-        ];
-
-        // SAYFA YÜKLENDİĞİNDE
-        document.addEventListener('DOMContentLoaded', function() {
-            // Giriş kontrolü
-            const user = JSON.parse(localStorage.getItem('banabeyderler_user'));
-            if (!user) {
-                alert('Önce giriş yapmalısın!');
-                window.location.href = 'index.html';
-                return;
+        // Chat uygulaması
+        class CosmicChat {
+            constructor() {
+                this.currentUser = null;
+                this.currentGroup = 'general';
+                this.messages = [];
+                this.emojiPickerVisible = false;
+                this.init();
             }
 
-            // Online kullanıcıları göster
-            loadOnlineUsers();
-            
-            // Enter tuşu ile mesaj gönderme
-            document.getElementById('chatInput').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    sendMessage();
-                }
-            });
-        });
+            init() {
+                this.checkAuth();
+                this.loadUserData();
+                this.setupEventListeners();
+                this.generateOnlineUsers();
+                this.loadSampleMessages();
+            }
 
-        // ONLINE KULLANICILARI YÜKLE
-        function loadOnlineUsers() {
-            const usersList = document.getElementById('onlineUsersList');
-            usersList.innerHTML = onlineUsers.map(user => `
-                <div class="user-card">
-                    <div style="display: flex; justify-content: between; align-items: center;">
-                        <span>${user.name}</span>
-                        <span class="user-online">${user.isOnline ? '🟢' : '🔴'} Level ${user.level}</span>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // MESAJ GÖNDER
-        function sendMessage() {
-            const input = document.getElementById('chatInput');
-            const message = input.value.trim();
-            
-            if (message) {
-                // Kullanıcı mesajını ekle
-                addMessage('Sen', message, 'user');
-                input.value = '';
+            // Kimlik doğrulama kontrolü
+            checkAuth() {
+                const user = localStorage.getItem('cosmicUser');
+                const horoscope = localStorage.getItem('userHoroscope');
                 
-                // AI yanıtı (2 saniye sonra)
+                if (!user || !horoscope) {
+                    window.location.href = 'index.html';
+                    return;
+                }
+                
+                this.currentUser = JSON.parse(user);
+                this.userHoroscope = horoscope;
+            }
+
+            // Kullanıcı verilerini yükle
+            loadUserData() {
+                document.getElementById('userName').textContent = this.currentUser.name;
+                document.getElementById('userAvatar').textContent = this.currentUser.avatar;
+                document.getElementById('userHoroscope').textContent = this.userHoroscope;
+            }
+
+            // Event listener'ları kur
+            setupEventListeners() {
+                const messageInput = document.getElementById('messageInput');
+                
+                // Enter tuşu ile mesaj gönderme
+                messageInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        this.sendMessage();
+                    }
+                });
+
+                // Emoji picker dışına tıklama
+                document.addEventListener('click', (e) => {
+                    if (!e.target.closest('.emoji-picker') && !e.target.closest('.btn-emoji')) {
+                        this.hideEmojiPicker();
+                    }
+                });
+
+                // Grup seçimi
+                document.querySelectorAll('.group-item').forEach(item => {
+                    item.addEventListener('click', () => {
+                        this.switchGroup(item.dataset.group);
+                    });
+                });
+
+                // Mobil menü
+                document.getElementById('menuToggle').addEventListener('click', () => {
+                    document.querySelector('.sidebar').classList.toggle('mobile-open');
+                });
+            }
+
+            // Online kullanıcıları oluştur (simülasyon)
+            generateOnlineUsers() {
+                const onlineUsers = [
+                    { name: "Ay Yıldız", horoscope: "Koç", avatar: "🚀", online: true },
+                    { name: "Zeynep Cosmos", horoscope: "Aslan", avatar: "🌟", online: true },
+                    { name: "Can Galaxy", horoscope: "Yay", avatar: "🪐", online: true },
+                    { name: "Elif Star", horoscope: "Terazi", avatar: "✨", online: true },
+                    { name: "Deniz Moon", horoscope: "Balık", avatar: "🌙", online: true }
+                ];
+
+                const usersList = document.getElementById('usersList');
+                usersList.innerHTML = '';
+
+                onlineUsers.forEach(user => {
+                    const userElement = document.createElement('div');
+                    userElement.className = 'user-item';
+                    userElement.innerHTML = `
+                        <div class="user-avatar-small">${user.avatar}</div>
+                        <div class="user-details">
+                            <span class="user-name">${user.name}</span>
+                            <span class="user-status">${user.horoscope}</span>
+                        </div>
+                        <div class="online-indicator"></div>
+                    `;
+                    usersList.appendChild(userElement);
+                });
+
+                document.getElementById('onlineCount').textContent = `${onlineUsers.length + 1} kullanıcı online`;
+            }
+
+            // Örnek mesajları yükle
+            loadSampleMessages() {
+                const sampleMessages = [
+                    { user: "Ay Yıldız", message: "Merhaba evren! Bugün nasılsınız? 🌟", time: "10:30", avatar: "🚀" },
+                    { user: "Zeynep Cosmos", message: "Harika bir gün! Yıldızlar özel bir şeyler söylüyor ✨", time: "10:32", avatar: "🌟" },
+                    { user: "Can Galaxy", message: "Yeni gezegen keşifleri hakkında konuşmak isteyen var mı? 🪐", time: "10:35", avatar: "🪐" }
+                ];
+
+                sampleMessages.forEach(msg => {
+                    this.addMessageToChat(msg, false);
+                });
+            }
+
+            // Mesaj gönder
+            sendMessage() {
+                const messageInput = document.getElementById('messageInput');
+                const message = messageInput.value.trim();
+
+                if (message === '') return;
+
+                const newMessage = {
+                    user: this.currentUser.name,
+                    message: message,
+                    time: new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }),
+                    avatar: this.currentUser.avatar,
+                    isCurrentUser: true
+                };
+
+                this.addMessageToChat(newMessage, true);
+                messageInput.value = '';
+
+                // Otomatik cevap (simülasyon)
                 setTimeout(() => {
-                    const aiResponses = [
-                        "Burç yorumları hakkında merak ettikleriniz neler?",
-                        "Hangi burçla ilgili bilgi almak istiyorsunuz?",
-                        "Günlük burç yorumları için ana sayfaya gidebilirsiniz!",
-                        "Burç uyumu hakkında sorularınızı yanıtlayabilirim!",
-                        "Yıldızlar bugün size ne söylüyor? 🎭"
-                    ];
-                    const response = aiResponses[Math.floor(Math.random() * aiResponses.length)];
-                    addMessage('AI Asistan', response, 'ai');
-                }, 2000);
+                    this.generateAutoReply(message);
+                }, 1000 + Math.random() * 2000);
+            }
+
+            // Otomatik cevap oluştur
+            generateAutoReply(userMessage) {
+                const replies = [
+                    "Bu çok ilginç! 🚀",
+                    "Kesinlikle katılıyorum! 🌟",
+                    "Evren bize ne güzel sürprizler hazırlıyor... ✨",
+                    "Burçların bugün bu konuda etkili olabilir! 🔮",
+                    "CosmicChat'te bunu konuşmak harika! 🪐"
+                ];
+
+                const randomUser = [
+                    { name: "Ay Yıldız", avatar: "🚀" },
+                    { name: "Zeynep Cosmos", avatar: "🌟" },
+                    { name: "Can Galaxy", avatar: "🪐" }
+                ][Math.floor(Math.random() * 3)];
+
+                const replyMessage = {
+                    user: randomUser.name,
+                    message: replies[Math.floor(Math.random() * replies.length)],
+                    time: new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }),
+                    avatar: randomUser.avatar,
+                    isCurrentUser: false
+                };
+
+                this.addMessageToChat(replyMessage, true);
+            }
+
+            // Mesajı chat'e ekle
+            addMessageToChat(messageData, animate = false) {
+                const messagesContainer = document.getElementById('messagesContainer');
+                const messageElement = document.createElement('div');
+                
+                messageElement.className = `message ${messageData.isCurrentUser ? 'own-message' : 'other-message'}`;
+                if (animate) {
+                    messageElement.style.animation = 'fadeInUp 0.3s ease';
+                }
+
+                messageElement.innerHTML = `
+                    <div class="message-avatar">${messageData.avatar}</div>
+                    <div class="message-content">
+                        <div class="message-header">
+                            <span class="message-sender">${messageData.user}</span>
+                            <span class="message-time">${messageData.time}</span>
+                        </div>
+                        <div class="message-text">${this.parseMessage(messageData.message)}</div>
+                    </div>
+                `;
+
+                messagesContainer.appendChild(messageElement);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+
+            // Mesaj içeriğini parse et (emoji ve link desteği)
+            parseMessage(text) {
+                // Basit emoji ve link dönüşümü
+                return text
+                    .replace(/:\\)/g, '😊')
+                    .replace(/:\()/g, '😔')
+                    .replace(/<3/g, '❤️')
+                    .replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
+            }
+
+            // Grup değiştir
+            switchGroup(group) {
+                this.currentGroup = group;
+                const groupNames = {
+                    fire: 'Ateş Grubu (Koç, Aslan, Yay)',
+                    earth: 'Toprak Grubu (Boğa, Başak, Oğlak)',
+                    air: 'Hava Grubu (İkizler, Terazi, Kova)',
+                    water: 'Su Grubu (Yengeç, Akrep, Balık)'
+                };
+                
+                document.getElementById('chatTitle').textContent = groupNames[group] || 'Genel Sohbet';
+                this.clearMessages();
+                this.addSystemMessage(`${groupNames[group]} sohbetine katıldınız!`);
+            }
+
+            // Sistem mesajı ekle
+            addSystemMessage(text) {
+                const messagesContainer = document.getElementById('messagesContainer');
+                const systemMessage = document.createElement('div');
+                systemMessage.className = 'system-message';
+                systemMessage.innerHTML = `<span>${text}</span>`;
+                messagesContainer.appendChild(systemMessage);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+
+            // Mesajları temizle
+            clearMessages() {
+                const messagesContainer = document.getElementById('messagesContainer');
+                const welcomeMessage = messagesContainer.querySelector('.welcome-message');
+                messagesContainer.innerHTML = '';
+                if (welcomeMessage) {
+                    messagesContainer.appendChild(welcomeMessage);
+                }
+            }
+
+            // Emoji picker'ı göster/gizle
+            toggleEmojiPicker() {
+                this.emojiPickerVisible = !this.emojiPickerVisible;
+                const picker = document.getElementById('emojiPicker');
+                
+                if (this.emojiPickerVisible) {
+                    this.showEmojiPicker();
+                } else {
+                    this.hideEmojiPicker();
+                }
+            }
+
+            showEmojiPicker() {
+                const picker = document.getElementById('emojiPicker');
+                const emojis = ['😀', '😂', '🥰', '😎', '🚀', '🌟', '✨', '🪐', '🌙', '☀️', '❤️', '🔥', '💧', '🌍', '💫'];
+                
+                picker.innerHTML = emojis.map(emoji => 
+                    `<span class="emoji" onclick="addEmoji('${emoji}')">${emoji}</span>`
+                ).join('');
+                
+                picker.style.display = 'flex';
+            }
+
+            hideEmojiPicker() {
+                const picker = document.getElementById('emojiPicker');
+                picker.style.display = 'none';
+                this.emojiPickerVisible = false;
             }
         }
 
-        // MESAJ EKLE
-        function addMessage(sender, text, type) {
-            const chatDiv = document.getElementById('chatMessages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${type}-message`;
-            messageDiv.innerHTML = `
-                <div class="message-sender">${sender}:</div>
-                ${text}
-            `;
-            chatDiv.appendChild(messageDiv);
-            chatDiv.scrollTop = chatDiv.scrollHeight;
+        // Global fonksiyonlar
+        function addEmoji(emoji) {
+            const input = document.getElementById('messageInput');
+            input.value += emoji;
+            input.focus();
         }
 
-        // ÇIKIŞ
         function logout() {
-            localStorage.removeItem('banabeyderler_user');
-            alert('Çıkış yapıldı!');
+            localStorage.removeItem('cosmicUser');
+            localStorage.removeItem('userHoroscope');
             window.location.href = 'index.html';
         }
+
+        function clearChat() {
+            if (confirm('Sohbet geçmişini temizlemek istediğinizden emin misiniz?')) {
+                chatApp.clearMessages();
+            }
+        }
+
+        function showSettings() {
+            alert('Ayarlar menüsü yakında eklenecek! ⚙️');
+        }
+
+        // Uygulamayı başlat
+        const chatApp = new CosmicChat();
+
+        // Yıldız efekti
+        document.addEventListener('DOMContentLoaded', function() {
+            createStars();
+        });
+
+        function createStars() {
+            const stars = document.querySelector('.stars');
+            for (let i = 0; i < 150; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + 'vw';
+                star.style.top = Math.random() * 100 + 'vh';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                stars.appendChild(star);
+            }
+        }
     </script>
+
+    <style>
+        /* CHAT SAYFASI STİLLERİ */
+        .chat-container {
+            display: flex;
+            height: 100vh;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 300px;
+            background: rgba(15, 15, 35, 0.8);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo h2 {
+            font-size: 1.2rem;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .btn-menu {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        /* KULLANICI PROFİLİ */
+        .user-profile {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #ff6b6b, #ffa36b);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .user-info h3 {
+            margin-bottom: 5px;
+            color: white;
+        }
+
+        .user-info p {
+            color: #a0a0d8;
+            font-size: 0.9rem;
+        }
+
+        .btn-logout {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-left: auto;
+        }
+
+        .btn-logout:hover {
+            background: rgba(255, 107, 107, 0.3);
+        }
+
+        /* ONLINE KULLANICILAR */
+        .online-users {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            flex: 1;
+        }
+
+        .online-users h4 {
+            color: #ffd93d;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .user-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .user-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .user-avatar-small {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .user-details {
+            flex: 1;
+        }
+
+        .user-name {
+            display: block;
+            color: white;
+            font-size: 0.9rem;
+            margin-bottom: 2px;
+        }
+
+        .user-status {
+            display: block;
+            color: #a0a0d8;
+            font-size: 0.8rem;
+        }
+
+        .online-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #4ecdc4;
+        }
+
+        /* BURÇ GRUPLARI */
+        .zodiac-groups {
+            padding: 20px;
+        }
+
+        .zodiac-groups h4 {
+            color: #ffd93d;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .group-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+        }
+
+        .group-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .group-item.active {
+            background: rgba(255, 217, 61, 0.2);
+            border-left: 3px solid #ffd93d;
+        }
+
+        /* ANA SOHBET ALANI */
+        .chat-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: rgba(10, 10, 25, 0.6);
+        }
+
+        /* CHAT HEADER */
+        .chat-header {
+            padding: 20px 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(15, 15, 35, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .chat-info h3 {
+            color: white;
+            margin-bottom: 5px;
+        }
+
+        .chat-info p {
+            color: #a0a0d8;
+            font-size: 0.9rem;
+        }
+
+        .chat-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-action {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-action:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* MESAJLAR ALANI */
+        .messages-container {
+            flex: 1;
+            padding: 20px 30px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .welcome-message {
+            text-align: center;
+            padding: 40px 20px;
+            color: #a0a0d8;
+        }
+
+        .welcome-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .message {
+            display: flex;
+            gap: 12px;
+            max-width: 70%;
+            animation: fadeInUp 0.3s ease;
+        }
+
+        .own-message {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        .other-message {
+            align-self: flex-start;
+        }
+
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .message-content {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px 16px;
+            border-radius: 18px;
+            backdrop-filter: blur(10px);
+        }
+
+        .own-message .message-content {
+            background: linear-gradient(45deg, #ff6b6b, #ffa36b);
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .message-sender {
+            font-weight: 600;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .message-time {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.8rem;
+        }
+
+        .message-text {
+            color: white;
+            line-height: 1.4;
+        }
+
+        .system-message {
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        .system-message span {
+            background: rgba(255, 217, 61, 0.2);
+            color: #ffd93d;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+        }
+
+        /* MESAJ GİRİŞ ALANI */
+        .message-input-container {
+            padding: 20px 30px;
+            background: rgba(15, 15, 35, 0.8);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        #messageInput {
+            flex: 1;
+            padding: 15px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        #messageInput:focus {
+            outline: none;
+            border-color: #ffd93d;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        #messageInput::placeholder {
+            color: #a0a0d8;
+        }
+
+        .btn-emoji, .btn-send {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .btn-send {
+            background: linear-gradient(45deg, #ff6b6b, #ffa36b);
+        }
+
+        .btn-emoji:hover, .btn-send:hover {
+            transform: scale(1.1);
+        }
+
+        /* EMOJİ PICKER */
+        .emoji-picker {
+            display: none;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 15px;
+            background: rgba(30, 30, 60, 0.95);
+            border-radius: 15px;
+            margin-top: 10px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .emoji {
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            padding: 5px;
+        }
+
+        .emoji:hover {
+            transform: scale(1.3);
+        }
+
+        /* ANİMASYONLAR */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: 0;
+                top: 0;
+                height: 100%;
+                transform: translateX(-100%);
+                z-index: 1000;
+            }
+
+            .sidebar.mobile-open {
+                transform: translateX(0);
+            }
+
+            .btn-menu {
+                display: block;
+            }
+
+            .message {
+                max-width: 85%;
+            }
+
+            .chat-header, .message-input-container {
+                padding: 15px 20px;
+            }
+
+            .messages-container {
+                padding: 15px 20px;
+            }
+        }
+    </style>
 </body>
 </html>
