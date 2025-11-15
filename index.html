@@ -15,6 +15,7 @@
             --gezegen-turuncu: #F56565;
             --altin: #FFD700;
             --elmas: #38B2AC;
+            --toz-pembe: #ED64A6;
         }
 
         * {
@@ -464,6 +465,9 @@
             loadUserData();
             updateDisplay();
             setupEventListeners();
+            
+            // Günlük bonus kontrolü
+            checkDailyBonus();
         });
 
         // EVENT LISTENER'LARI KUR
@@ -571,6 +575,10 @@
                 
                 // SEVİYE ATLAMA MESAJI
                 addChatMessage('Sistem', `🎉 TEBRİKLER! Seviye ${userData.level} oldunuz!`, 'ai');
+                
+                // Seviye atlama bonusu
+                userData.elmas += 10;
+                userData.yildiz += 5;
             }
             
             updateDisplay();
@@ -613,19 +621,54 @@
 
         // PAYLAŞIM SİSTEMİ
         function shareHoroscope(zodiac, horoscope) {
-            addChatMessage('Kullanıcı', `♈ ${zodiac} yorumumu paylaşıyorum: ${horoscope.substring(0, 80)}...`, 'user');
+            const postsDiv = document.getElementById('communityPosts');
+            const postDiv = document.createElement('div');
+            postDiv.className = 'message';
+            postDiv.style.background = 'rgba(255,255,255,0.05)';
+            postDiv.innerHTML = `
+                <strong>Kullanıcı:</strong> ♈ ${zodiac} yorumumu paylaşıyorum:<br>
+                ${horoscope.substring(0, 80)}...
+            `;
+            postsDiv.appendChild(postDiv);
+            
             addXP(15);
             userData.elmas += 5; // Paylaşım bonusu
             updateDisplay();
             saveUserData();
         }
 
+        // GÜNLÜK BONUS KONTROLÜ
+        function checkDailyBonus() {
+            const today = new Date().toDateString();
+            const lastBonus = localStorage.getItem('lastDailyBonus');
+            
+            if (lastBonus !== today) {
+                userData.elmas += 10;
+                userData.yildiz += 5;
+                localStorage.setItem('lastDailyBonus', today);
+                addChatMessage('Sistem', `🎁 Günlük bonusunuz: 10 Elmas ve 5 Yıldız!`, 'ai');
+                updateDisplay();
+                saveUserData();
+            }
+        }
+
         // CEO ADMIN PANEL
         function openCEOAdmin() {
             const password = prompt('CEO Şifresi:');
             if (password === 'IA_2024_SpecialAccess') {
-                alert('CEO Paneline yönlendiriliyorsunuz...');
-                // Burada CEO paneli açılacak
+                // CEO paneli aç
+                const ceoPanel = window.open('', 'CEO Panel', 'width=600,height=400');
+                ceoPanel.document.write(`
+                    <html>
+                    <head><title>CEO Panel - Banabeyderler</title></head>
+                    <body style="background:#0f0f23;color:white;padding:20px;">
+                        <h1>CEO Admin Panel</h1>
+                        <p>Kullanıcı Verileri:</p>
+                        <pre>${JSON.stringify(userData, null, 2)}</pre>
+                        <button onclick="window.close()">Kapat</button>
+                    </body>
+                    </html>
+                `);
             } else if (password) {
                 alert('❌ Şifre hatalı!');
             }
@@ -633,7 +676,16 @@
 
         // GİRİŞ SİSTEMİ
         function showLogin() {
-            alert('Google Giriş sistemi yakında eklenecek! 🚀');
+            alert('Google Giriş sistemi yakında eklenecek! 🚀\n\nŞimdilik demo modunda kullanabilirsiniz.');
+            
+            // Demo kullanıcı oluştur
+            userData.elmas += 100;
+            userData.yildiz += 50;
+            userData.altin += 25;
+            updateDisplay();
+            saveUserData();
+            
+            addChatMessage('Sistem', 'Demo modu aktif! 100 Elmas, 50 Yıldız ve 25 Altın bonusu kazandınız!', 'ai');
         }
 
         // LOCALSTORAGE
