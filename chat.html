@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banabeyderler - AI Sohbet</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #1a1a2e;
+            color: white;
+            font-family: 'Arial', sans-serif;
+            height: 100vh;
+            display: flex;
+        }
+
+        /* ONLINE KULLANICILAR - LED PANEL */
+        .online-users {
+            width: 250px;
+            background: rgba(0, 0, 0, 0.7);
+            border-right: 2px solid #6B46C1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .user-card {
+            background: rgba(107, 70, 193, 0.3);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border-left: 4px solid #38B2AC;
+        }
+
+        .user-online {
+            color: #38B2AC;
+            font-size: 0.8rem;
+        }
+
+        /* SOHBET ALANI */
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-bottom: 2px solid #6B46C1;
+            text-align: center;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .message {
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 15px;
+            max-width: 70%;
+            animation: messageSlide 0.3s ease-out;
+        }
+
+        @keyframes messageSlide {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .user-message {
+            background: linear-gradient(135deg, #6B46C1, #38B2AC);
+            margin-left: auto;
+            border-bottom-right-radius: 5px;
+        }
+
+        .ai-message {
+            background: rgba(255, 255, 255, 0.1);
+            margin-right: auto;
+            border-bottom-left-radius: 5px;
+            border: 1px solid #6B46C1;
+        }
+
+        .message-sender {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #FFD700;
+        }
+
+        /* CHAT INPUT */
+        .chat-input-container {
+            display: flex;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border-top: 2px solid #6B46C1;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #6B46C1;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+        }
+
+        .send-btn {
+            background: linear-gradient(135deg, #6B46C1, #38B2AC);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            margin-left: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* NAVIGATION */
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <!-- ONLINE KULLANICILAR -->
+    <div class="online-users">
+        <h3>🟢 ÇEVRİMİÇİ</h3>
+        <div id="onlineUsersList">
+            <!-- JavaScript ile doldurulacak -->
+        </div>
+    </div>
+
+    <!-- SOHBET ALANI -->
+    <div class="chat-container">
+        <div class="chat-header">
+            <h2>🤖 AI Burç Asistanı</h2>
+            <p>Burçlar hakkında sorularınızı sorun</p>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+            <div class="message ai-message">
+                <div class="message-sender">AI Asistan:</div>
+                Merhaba! Burç yorumları ve astroloji hakkında sorularınızı yanıtlayabilirim. 🚀
+            </div>
+        </div>
+
+        <div class="chat-input-container">
+            <input type="text" class="chat-input" id="chatInput" placeholder="AI'ya soru sor...">
+            <button class="send-btn" onclick="sendMessage()">Gönder</button>
+        </div>
+
+        <div style="padding: 15px; text-align: center;">
+            <div class="nav-buttons">
+                <a href="horoscope.html" class="nav-btn">♈ Burçlar</a>
+                <a href="index.html" class="nav-btn">🏠 Ana Sayfa</a>
+                <button class="nav-btn" onclick="logout()">🔓 Çıkış</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ONLINE KULLANICILAR
+        const onlineUsers = [
+            { name: 'Abdullah', level: 15, isOnline: true },
+            { name: 'Ayşe', level: 8, isOnline: true },
+            { name: 'Mehmet', level: 12, isOnline: true },
+            { name: 'Zeynep', level: 5, isOnline: false }
+        ];
+
+        // SAYFA YÜKLENDİĞİNDE
+        document.addEventListener('DOMContentLoaded', function() {
+            // Giriş kontrolü
+            const user = JSON.parse(localStorage.getItem('banabeyderler_user'));
+            if (!user) {
+                alert('Önce giriş yapmalısın!');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Online kullanıcıları göster
+            loadOnlineUsers();
+            
+            // Enter tuşu ile mesaj gönderme
+            document.getElementById('chatInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+        });
+
+        // ONLINE KULLANICILARI YÜKLE
+        function loadOnlineUsers() {
+            const usersList = document.getElementById('onlineUsersList');
+            usersList.innerHTML = onlineUsers.map(user => `
+                <div class="user-card">
+                    <div style="display: flex; justify-content: between; align-items: center;">
+                        <span>${user.name}</span>
+                        <span class="user-online">${user.isOnline ? '🟢' : '🔴'} Level ${user.level}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // MESAJ GÖNDER
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (message) {
+                // Kullanıcı mesajını ekle
+                addMessage('Sen', message, 'user');
+                input.value = '';
+                
+                // AI yanıtı (2 saniye sonra)
+                setTimeout(() => {
+                    const aiResponses = [
+                        "Burç yorumları hakkında merak ettikleriniz neler?",
+                        "Hangi burçla ilgili bilgi almak istiyorsunuz?",
+                        "Günlük burç yorumları için ana sayfaya gidebilirsiniz!",
+                        "Burç uyumu hakkında sorularınızı yanıtlayabilirim!",
+                        "Yıldızlar bugün size ne söylüyor? 🎭"
+                    ];
+                    const response = aiResponses[Math.floor(Math.random() * aiResponses.length)];
+                    addMessage('AI Asistan', response, 'ai');
+                }, 2000);
+            }
+        }
+
+        // MESAJ EKLE
+        function addMessage(sender, text, type) {
+            const chatDiv = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}-message`;
+            messageDiv.innerHTML = `
+                <div class="message-sender">${sender}:</div>
+                ${text}
+            `;
+            chatDiv.appendChild(messageDiv);
+            chatDiv.scrollTop = chatDiv.scrollHeight;
+        }
+
+        // ÇIKIŞ
+        function logout() {
+            localStorage.removeItem('banabeyderler_user');
+            alert('Çıkış yapıldı!');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
