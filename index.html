@@ -3,274 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Banabeyderler AI - Uzay Üssü</title>
+    <title>Banabeyderler AI</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            background: #000;
+            background: #0f0f23;
             color: white;
-            font-family: 'Arial', sans-serif;
-            overflow: hidden;
-            height: 100vh;
-        }
-
-        .space-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 30%, rgba(107, 70, 193, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(56, 178, 172, 0.3) 0%, transparent 50%);
-        }
-
-        .stars {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                radial-gradient(2px 2px at 20% 30%, #fff, transparent),
-                radial-gradient(2px 2px at 40% 70%, #fff, transparent),
-                radial-gradient(1px 1px at 60% 20%, #fff, transparent),
-                radial-gradient(1px 1px at 80% 50%, #fff, transparent);
-            animation: twinkle 3s infinite alternate;
-        }
-
-        @keyframes twinkle {
-            0% { opacity: 0.3; }
-            100% { opacity: 1; }
-        }
-
-        .login-container {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            font-family: Arial;
             text-align: center;
-            z-index: 10;
-            width: 90%;
-            max-width: 600px;
+            padding: 50px 20px;
         }
-
+        
         .welcome-text {
-            font-size: 3.5rem;
-            font-weight: bold;
+            font-size: 2.5rem;
             margin-bottom: 30px;
-            background: linear-gradient(45deg, #6B46C1, #38B2AC, #FFD700);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: textGlow 2s ease-in-out infinite alternate;
-            text-shadow: 0 0 10px currentColor;
-            line-height: 1.2;
+            color: #6B46C1;
         }
-
-        @keyframes textGlow {
-            0% { 
-                text-shadow: 0 0 10px #6B46C1, 0 0 20px #6B46C1;
-            }
-            100% { 
-                text-shadow: 0 0 20px #38B2AC, 0 0 30px #38B2AC;
-            }
-        }
-
-        .subtitle {
-            font-size: 1.2rem;
-            margin-bottom: 50px;
-            color: #aaa;
-        }
-
-        .info-panel {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 15px;
-            padding: 25px;
-            margin: 30px 0;
-        }
-
-        .info-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 15px 0;
-            font-size: 1.1rem;
-        }
-
-        .led-date {
-            font-family: 'Courier New', monospace;
-            font-weight: bold;
-            color: #FFD700;
-            text-shadow: 0 0 10px #FFD700;
-        }
-
-        .zodiac-animation {
-            font-size: 4rem;
-            margin: 20px 0;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .zodiac-name {
-            font-size: 1.5rem;
-            color: #38B2AC;
-            text-shadow: 0 0 10px #38B2AC;
-        }
-
-        .login-buttons {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            margin-top: 40px;
-        }
-
+        
         .login-btn {
-            background: linear-gradient(135deg, #6B46C1, #38B2AC);
+            background: #38B2AC;
             color: white;
             border: none;
             padding: 15px 30px;
-            border-radius: 25px;
+            margin: 10px;
+            border-radius: 10px;
             font-size: 1.1rem;
             cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .login-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(107, 70, 193, 0.4);
-        }
-
-        .demo-btn {
-            background: linear-gradient(135deg, #FFD700, #FF6B6B);
         }
     </style>
 </head>
 <body>
-    <div class="space-background">
-        <div class="stars"></div>
-    </div>
-
-    <div class="login-container">
-        <h1 class="welcome-text">BURÇ<br>EVRENİNE<br>HOŞ GELDİN</h1>
-        
-        <p class="subtitle">Yıldızların senin için ne söylediğini keşfet...</p>
-
-        <div class="info-panel">
-            <div class="info-item">
-                <span>📅 Bugün:</span>
-                <span class="led-date" id="todayDate">Yükleniyor...</span>
-            </div>
-            <div class="info-item">
-                <span>♈ Günün Burcu:</span>
-                <span class="zodiac-name" id="dailyZodiac">Hesaplanıyor...</span>
-            </div>
-        </div>
-
-        <div class="zodiac-animation" id="zodiacAnimation">♈</div>
-
-        <div class="login-buttons">
-            <button class="login-btn" onclick="googleLogin()">
-                🔐 Google ile Giriş
-            </button>
-            <button class="login-btn demo-btn" onclick="demoLogin()">
-                🚀 Demo Giriş
-            </button>
-        </div>
-    </div>
+    <h1 class="welcome-text">Burç Evreni</h1>
+    <p>Giriş yap ve keşfet</p>
+    
+    <button class="login-btn" onclick="demoLogin()">Demo Giriş</button>
+    <button class="login-btn" onclick="googleLogin()">Google Giriş</button>
 
     <script>
-        function updateDateTime() {
-            const now = new Date();
-            const options = { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric'
-            };
-            const dateStr = now.toLocaleDateString('tr-TR', options);
-            document.getElementById('todayDate').textContent = dateStr.toUpperCase();
-        }
-
-        function getDailyZodiac() {
-            const today = new Date();
-            const day = today.getDate();
-            const month = today.getMonth() + 1;
-            
-            const zodiacs = [
-                { name: "KOVA", icon: "♒", start: [1, 20], end: [2, 18] },
-                { name: "BALIK", icon: "♓", start: [2, 19], end: [3, 20] },
-                { name: "KOÇ", icon: "♈", start: [3, 21], end: [4, 19] },
-                { name: "BOĞA", icon: "♉", start: [4, 20], end: [5, 20] },
-                { name: "İKİZLER", icon: "♊", start: [5, 21], end: [6, 20] },
-                { name: "YENGEÇ", icon: "♋", start: [6, 21], end: [7, 22] },
-                { name: "ASLAN", icon: "♌", start: [7, 23], end: [8, 22] },
-                { name: "BAŞAK", icon: "♍", start: [8, 23], end: [9, 22] },
-                { name: "TERAZİ", icon: "♎", start: [9, 23], end: [10, 22] },
-                { name: "AKREP", icon: "♏", start: [10, 23], end: [11, 21] },
-                { name: "YAY", icon: "♐", start: [11, 22], end: [12, 21] },
-                { name: "OĞLAK", icon: "♑", start: [12, 22], end: [1, 19] }
-            ];
-
-            for (let zodiac of zodiacs) {
-                const [startMonth, startDay] = zodiac.start;
-                const [endMonth, endDay] = zodiac.end;
-                
-                if ((month === startMonth && day >= startDay) || 
-                    (month === endMonth && day <= endDay)) {
-                    return zodiac;
-                }
-            }
-            
-            return { name: "KOÇ", icon: "♈" };
-        }
-
-        function animateZodiac() {
-            const zodiac = getDailyZodiac();
-            document.getElementById('zodiacAnimation').textContent = zodiac.icon;
-            document.getElementById('dailyZodiac').textContent = zodiac.name;
-        }
-
-        function googleLogin() {
-            alert('🔐 Google girişi yakında aktif!');
-        }
-
         function demoLogin() {
             const userData = {
-                name: 'Uzay Kaşifi',
-                email: 'demo@banabeyderler.com',
-                level: 1,
-                diamonds: 100,
-                isDemo: true
+                name: 'Kullanıcı',
+                diamonds: 100
             };
-            
             localStorage.setItem('banabeyderler_user', JSON.stringify(userData));
-            alert('🚀 Demo evrene giriş yapıldı!');
             window.location.href = 'horoscope.html';
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            updateDateTime();
-            animateZodiac();
-            
-            setInterval(updateDateTime, 60000);
-            setInterval(animateZodiac, 5000);
+        function googleLogin() {
+            alert('Google giriş yakında!');
+        }
 
-            const user = localStorage.getItem('banabeyderler_user');
-            if (user) {
-                window.location.href = 'horoscope.html';
-            }
-        });
+        // Zaten giriş yapmışsa
+        if (localStorage.getItem('banabeyderler_user')) {
+            window.location.href = 'horoscope.html';
+        }
     </script>
 </body>
 </html>
