@@ -3,21 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Banabeyderler - AI Burç Platformu</title>
+    <title>Banabeyderler AI - Google Giriş Aktif</title>
     <style>
-        /* MODERN UZAY TEMASI */
-        :root {
-            --uzay-mor: #6B46C1;
-            --yildiz-mavi: #38B2AC;
-            --gece-koyu: #0f0f23;
-            --yildiz-beyaz: #ffffff;
-            --bulut-gri: #a0a0a0;
-            --gezegen-turuncu: #F56565;
-            --altin: #FFD700;
-            --elmas: #38B2AC;
-            --toz-pembe: #ED64A6;
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -25,302 +12,97 @@
         }
 
         body {
-            background: var(--gece-koyu);
-            color: var(--yildiz-beyaz);
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.6;
-            min-height: 100vh;
-            background-image: 
-                radial-gradient(circle at 20% 30%, rgba(107, 70, 193, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(56, 178, 172, 0.15) 0%, transparent 50%);
+            background: #0f0f23;
+            color: white;
+            font-family: Arial, sans-serif;
+            padding: 20px;
         }
 
-        /* GLASS TASARIM */
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 25px;
-            backdrop-filter: blur(15px);
-            margin-bottom: 20px;
-        }
-
-        /* HEADER */
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 30px;
             padding: 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
         }
 
         .logo {
-            font-size: 1.8rem;
+            font-size: 24px;
             font-weight: bold;
-            background: linear-gradient(135deg, var(--uzay-mor), var(--yildiz-mavi));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #6B46C1;
         }
 
-        /* GİRİŞ BUTONU */
         .giris-butonu {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: #38B2AC;
             color: white;
+            border: none;
             padding: 10px 20px;
-            border-radius: 20px;
-            cursor: pointer;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-            font-size: 0.9rem;
-        }
-
-        .giris-butonu:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        /* ANA İÇERİK */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            display: grid;
-            grid-template-columns: 1fr 300px;
-            gap: 20px;
-        }
-
-        /* BURÇ KARTLARI */
-        .zodiac-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-
-        .zodiac-card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .zodiac-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--yildiz-mavi);
-            box-shadow: 0 10px 25px rgba(56, 178, 172, 0.3);
-        }
-
-        .zodiac-icon {
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
-
-        .burc-adi {
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .burc-tarih {
-            font-size: 0.8rem;
-            color: var(--bulut-gri);
-        }
-
-        /* YORUM BÖLÜMÜ */
-        .horoscope-result {
-            background: rgba(255, 255, 255, 0.08);
-            padding: 20px;
-            border-radius: 15px;
-            min-height: 150px;
-            border-left: 4px solid var(--uzay-mor);
-            margin-bottom: 20px;
-        }
-
-        /* PAYLAŞIM BUTONU */
-        .paylasim-buton {
-            background: linear-gradient(135deg, var(--uzay-mor), var(--yildiz-mavi));
-            color: white;
-            border: none;
-            padding: 12px 20px;
             border-radius: 10px;
-            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.9rem;
         }
 
-        .paylasim-buton:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(107, 70, 193, 0.4);
-        }
-
-        /* CHAT SİSTEMİ */
-        .chat-container {
-            height: 400px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .chat-messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            margin-bottom: 15px;
-        }
-
-        .message {
-            margin-bottom: 15px;
-            padding: 12px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        .user-message {
-            background: rgba(56, 178, 172, 0.2);
-            margin-left: 20px;
-        }
-
-        .ai-message {
-            background: rgba(107, 70, 193, 0.2);
-            margin-right: 20px;
-        }
-
-        .chat-input {
-            display: flex;
-            gap: 10px;
-        }
-
-        .chat-input input {
-            flex: 1;
-            padding: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.08);
-            color: white;
-            font-size: 0.9rem;
-        }
-
-        .chat-input input:focus {
-            outline: none;
-            border-color: var(--yildiz-mavi);
-        }
-
-        /* SEVİYE SİSTEMİ */
-        .level-system {
-            text-align: center;
-            padding: 15px;
-            background: linear-gradient(135deg, var(--uzay-mor), var(--yildiz-mavi));
-            border-radius: 15px;
-            margin-bottom: 20px;
-        }
-
-        .level-progress {
-            background: rgba(255, 255, 255, 0.2);
-            height: 8px;
-            border-radius: 4px;
-            margin: 10px 0;
-            overflow: hidden;
-        }
-
-        .level-progress-fill {
-            height: 100%;
-            background: var(--altin);
-            transition: width 0.3s ease;
-        }
-
-        /* MAĞAZA */
-        .shop-items {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 15px;
-        }
-
-        .shop-item {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 15px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .shop-item:hover {
-            transform: scale(1.05);
-            border-color: var(--altin);
-        }
-
-        /* CEO PANEL BUTONU */
-        .ceo-access {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--gezegen-turuncu);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 25px;
-            cursor: pointer;
+        .google-login-btn {
+            background: white;
+            color: #757575;
+            border: 2px solid #ddd;
+            padding: 12px 24px;
+            border-radius: 8px;
             font-weight: bold;
-            box-shadow: 0 5px 15px rgba(245, 101, 101, 0.4);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 10px 0;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .google-login-btn:hover {
+            background: #f8f8f8;
+        }
+
+        .login-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
             z-index: 1000;
         }
 
-        /* LED EFEKTLİ YAZILAR */
-        .led-text {
-            font-weight: bold;
-            text-shadow: 0 0 10px currentColor;
-            animation: glow 2s ease-in-out infinite alternate;
+        .login-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #1a1a2e;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid #6B46C1;
+            min-width: 300px;
         }
 
-        @keyframes glow {
-            from { text-shadow: 0 0 10px currentColor; }
-            to { text-shadow: 0 0 20px currentColor, 0 0 30px currentColor; }
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
         }
 
-        /* LOADING SPINNER */
-        .loading-spinner {
-            border: 2px solid #f3f3f3;
-            border-top: 2px solid var(--yildiz-mavi);
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            animation: spin 1s linear infinite;
-            display: inline-block;
-            margin-right: 10px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* MOBİL UYUMLU */
-        @media (max-width: 768px) {
-            .container {
-                grid-template-columns: 1fr;
-                padding: 10px;
-            }
-            
-            .zodiac-grid {
-                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-            }
-            
-            .chat-input {
-                flex-direction: column;
-            }
-            
-            .ceo-access {
-                bottom: 10px;
-                right: 10px;
-                padding: 10px 15px;
-                font-size: 0.8rem;
-            }
+        .user-info {
+            background: rgba(107, 70, 193, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
         }
     </style>
 </head>
@@ -329,376 +111,267 @@
     <div class="header">
         <div class="logo">♈ Banabeyderler AI</div>
         <div class="user-menu">
-            <button class="giris-butonu" onclick="showLogin()">Giriş Yap</button>
+            <button class="giris-butonu" onclick="showLoginModal()">Giriş Yap</button>
         </div>
     </div>
 
     <!-- ANA İÇERİK -->
-    <div class="container">
-        <!-- SOL SÜTUN -->
-        <div class="main-content">
-            <!-- BURÇ YORUMU -->
-            <div class="glass-panel">
-                <h2 class="led-text" style="color: var(--yildiz-mavi);">♈ Günlük Burç Yorumu</h2>
-                <div class="zodiac-grid" id="zodiacGrid">
-                    <!-- Burç kartları JavaScript ile eklenecek -->
+    <div id="mainContent" style="text-align: center; padding: 50px 0;">
+        <h1>Burç Yorumları ve AI Asistan</h1>
+        <p>Google hesabınızla giriş yapın ve özelliklere erişin</p>
+    </div>
+
+    <!-- LOGIN MODAL -->
+    <div id="loginModal" class="login-modal">
+        <div class="login-content">
+            <button class="close-btn" onclick="hideLoginModal()">×</button>
+            <h2>🎯 Banabeyderler'e Hoş Geldiniz</h2>
+            <p style="margin: 20px 0; color: #aaa;">Giriş yönteminizi seçin</p>
+            
+            <!-- GOOGLE GİRİŞ BUTONU -->
+            <div id="googleButtonContainer">
+                <div id="g_id_onload"
+                    data-client_id="264644476458-iou4uj8klkll3dpcch1mokr1tf9dv72j.apps.googleusercontent.com"
+                    data-context="signin"
+                    data-ux_mode="popup"
+                    data-callback="handleGoogleLogin"
+                    data-auto_prompt="false">
                 </div>
-                <div class="horoscope-result" id="horoscopeResult">
-                    Burcunu seç ve günlük yorumunu AI'dan al!
+
+                <div class="g_id_signin"
+                    data-type="standard"
+                    data-shape="rectangular"
+                    data-theme="filled_blue"
+                    data-text="signin_with"
+                    data-size="large"
+                    data-logo_alignment="left"
+                    data-width="300">
                 </div>
             </div>
 
-            <!-- AI CHAT -->
-            <div class="glass-panel">
-                <h2 class="led-text" style="color: var(--uzay-mor);">🤖 AI Asistan</h2>
-                <div class="chat-container">
-                    <div class="chat-messages" id="chatMessages">
-                        <div class="message ai-message">
-                            <strong>AI Asistan:</strong> Merhaba! Burç yorumları hakkında sorularınızı yanıtlayabilirim. Abdullah Sarı tarafından geliştirildim! ✨
-                        </div>
-                    </div>
-                    <div class="chat-input">
-                        <input type="text" id="chatInput" placeholder="AI'ya soru sor... (Enter ile gönder)">
-                        <button class="paylasim-buton" onclick="sendMessage()">Gönder</button>
-                    </div>
-                </div>
-            </div>
+            <div style="margin: 20px 0; color: #aaa;">veya</div>
 
-            <!-- TOPLULUK PAYLAŞIMLARI -->
-            <div class="glass-panel">
-                <h2 class="led-text" style="color: var(--gezegen-turuncu);">👥 Topluluk Paylaşımları</h2>
-                <div id="communityPosts">
-                    <div class="message" style="background: rgba(255,255,255,0.05);">
-                        <strong>Hoş geldiniz!</strong> Burç yorumlarınızı paylaşarak topluluğa katılın! 🌟
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- SAĞ SÜTUN -->
-        <div class="sidebar">
-            <!-- KULLANICI PROFİLİ -->
-            <div class="glass-panel">
-                <div class="level-system">
-                    <h3>Seviye <span id="userLevel">1</span></h3>
-                    <div class="level-progress">
-                        <div class="level-progress-fill" id="levelProgress" style="width: 0%;"></div>
-                    </div>
-                    <div id="xpDisplay">0/100 XP</div>
-                </div>
-            </div>
-
-            <!-- MAĞAZA -->
-            <div class="glass-panel">
-                <h3>🛍️ Premium Mağaza</h3>
-                <div class="shop-items">
-                    <div class="shop-item" onclick="buyItem('vip_rozet')">
-                        <div>👑 VIP Rozet</div>
-                        <small>50 Elmas</small>
-                    </div>
-                    <div class="shop-item" onclick="buyItem('ozel_tema')">
-                        <div>🎨 Özel Tema</div>
-                        <small>100 Elmas</small>
-                    </div>
-                    <div class="shop-item" onclick="buyItem('ai_ozellik')">
-                        <div>🤖 AI+</div>
-                        <small>200 Elmas</small>
-                    </div>
-                </div>
-            </div>
-
-            <!-- PARA SİSTEMİ -->
-            <div class="glass-panel">
-                <h3>💰 Cüzdanım</h3>
-                <div style="display: flex; justify-content: space-around; text-align: center;">
-                    <div>
-                        <div>💎</div>
-                        <div id="elmasMiktar">0</div>
-                    </div>
-                    <div>
-                        <div>⭐</div>
-                        <div id="yildizMiktar">0</div>
-                    </div>
-                    <div>
-                        <div>🪙</div>
-                        <div id="altinMiktar">0</div>
-                    </div>
-                </div>
-            </div>
+            <!-- DEMO GİRİŞ -->
+            <button onclick="demoLogin()" style="background: #6B46C1; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; width: 100%;">
+                🚀 Demo Giriş Yap
+            </button>
         </div>
     </div>
 
-    <!-- CEO ERİŞİM BUTONU -->
-    <button class="ceo-access" onclick="openCEOAdmin()">CEO Panel</button>
+    <!-- Google Identity Services -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 
     <script>
-        // BURÇ VERİLERİ
-        const zodiacSigns = [
-            { icon: '♈', name: 'Koç', date: '21 Mart - 19 Nisan' },
-            { icon: '♉', name: 'Boğa', date: '20 Nisan - 20 Mayıs' },
-            { icon: '♊', name: 'İkizler', date: '21 Mayıs - 20 Haziran' },
-            { icon: '♋', name: 'Yengeç', date: '21 Haziran - 22 Temmuz' },
-            { icon: '♌', name: 'Aslan', date: '23 Temmuz - 22 Ağustos' },
-            { icon: '♍', name: 'Başak', date: '23 Ağustos - 22 Eylül' },
-            { icon: '♎', name: 'Terazi', date: '23 Eylül - 22 Ekim' },
-            { icon: '♏', name: 'Akrep', date: '23 Ekim - 21 Kasım' },
-            { icon: '♐', name: 'Yay', date: '22 Kasım - 21 Aralık' },
-            { icon: '♑', name: 'Oğlak', date: '22 Aralık - 19 Ocak' },
-            { icon: '♒', name: 'Kova', date: '20 Ocak - 18 Şubat' },
-            { icon: '♓', name: 'Balık', date: '19 Şubat - 20 Mart' }
-        ];
+        // GOOGLE LOGIN HANDLER
+        function handleGoogleLogin(response) {
+            console.log('Google Login Response:', response);
+            
+            // JWT token decode et (basit versiyon)
+            const payload = JSON.parse(atob(response.credential.split('.')[1]));
+            
+            const userData = {
+                name: payload.name,
+                email: payload.email,
+                picture: payload.picture,
+                googleId: payload.sub,
+                level: 1,
+                diamonds: 150, // Google giriş bonusu
+                stars: 75,
+                gold: 50,
+                isGoogle: true,
+                loginTime: new Date().toISOString()
+            };
+            
+            // LocalStorage'a kaydet
+            localStorage.setItem('banabeyderler_user', JSON.stringify(userData));
+            
+            // Modalı kapat
+            hideLoginModal();
+            
+            // Başarı mesajı
+            alert(`🎉 Google Giriş Başarılı!\n\nHoş geldin ${userData.name}!\n💎 150 Elmas bonusu!\n⭐ 75 Yıldız bonusu!`);
+            
+            // Sayfayı güncelle
+            location.reload();
+        }
 
-        // KULLANICI VERİLERİ
-        let userData = {
-            level: 1,
-            xp: 0,
-            xpNeeded: 100,
-            elmas: 0,
-            yildiz: 0,
-            altin: 0,
-            inventory: []
-        };
+        // DEMO GİRİŞ
+        function demoLogin() {
+            const userData = {
+                name: 'Demo Kullanıcı',
+                email: 'demo@banabeyderler.com',
+                picture: '👤',
+                level: 1,
+                diamonds: 100,
+                stars: 50,
+                gold: 25,
+                isDemo: true,
+                loginTime: new Date().toISOString()
+            };
+            
+            localStorage.setItem('banabeyderler_user', JSON.stringify(userData));
+            hideLoginModal();
+            alert(`🎉 Demo giriş başarılı!\n\nHoş geldin ${userData.name}!\n💎 100 Elmas bonusu!`);
+            location.reload();
+        }
+
+        // MODAL FONKSİYONLARI
+        function showLoginModal() {
+            document.getElementById('loginModal').style.display = 'block';
+        }
+
+        function hideLoginModal() {
+            document.getElementById('loginModal').style.display = 'none';
+        }
 
         // SAYFA YÜKLENDİĞİNDE
         document.addEventListener('DOMContentLoaded', function() {
-            loadZodiacCards();
-            loadUserData();
-            updateDisplay();
-            setupEventListeners();
+            const user = JSON.parse(localStorage.getItem('banabeyderler_user') || 'null');
             
-            // Günlük bonus kontrolü
-            checkDailyBonus();
+            if (user) {
+                updateUIForLoggedInUser(user);
+            }
         });
 
-        // EVENT LISTENER'LARI KUR
-        function setupEventListeners() {
-            // ENTER TUŞU ILE CHAT
-            document.getElementById('chatInput').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    sendMessage();
-                }
-            });
-        }
-
-        // BURÇ KARTLARINI YÜKLE
-        function loadZodiacCards() {
-            const grid = document.getElementById('zodiacGrid');
-            grid.innerHTML = zodiacSigns.map(zodiac => `
-                <div class="zodiac-card" onclick="getHoroscope('${zodiac.name}')">
-                    <div class="zodiac-icon">${zodiac.icon}</div>
-                    <div class="burc-adi">${zodiac.name}</div>
-                    <div class="burc-tarih">${zodiac.date}</div>
-                </div>
-            `).join('');
-        }
-
-        // BURÇ YORUMU AL
-        function getHoroscope(zodiacName) {
-            const resultDiv = document.getElementById('horoscopeResult');
-            resultDiv.innerHTML = `<div class="loading-spinner"></div> Yorum hazırlanıyor...`;
-            
-            setTimeout(() => {
-                const horoscopes = {
-                    'Koç': 'Bugün enerjin zirvede! Yeni başlangıçlar için mükemmel bir gün. Aşk hayatında sürprizler var.',
-                    'Boğa': 'Maddi konularda şanslısın. Sabırlı ol, kararlarını iyi düşün. Sağlığına dikkat et.',
-                    'İkizler': 'İletişim gücün çok yüksek! Önemli görüşmeler yap, fikirlerini paylaş.',
-                    'Yengeç': 'Duygusal derinlik ön planda. Aile ve ev konularında gelişmeler olacak.',
-                    'Aslan': 'Yaratıcılığın zirvede! Kendini ifade et, liderlik yap. İlham perisi seninle!',
-                    'Başak': 'Detaylara odaklan, organizasyon yap. Verimliliğin artacak, planlarını uygula.',
-                    'Terazi': 'İlişkilerde denge önemli. Adil ol, uzlaşmacı yaklaşımın problemleri çözecek.',
-                    'Akrep': 'Sezgilerin çok güçlü! Gizemli konulara eğil, derin düşünceler içindesin.',
-                    'Yay': 'Özgürlük arayışındasın! Yeni maceralar seni bekliyor, keşfetmeye devam et.',
-                    'Oğlak': 'Kariyer odaklı bir gün. Hedeflerine odaklan, disiplinli çalış. Başarı yakın!',
-                    'Kova': 'Yenilikçi fikirlerle dolu! Sosyal projelerde öncü ol, topluma katkı sağla.',
-                    'Balık': 'Hayal gücün zirvede! Spiritüel konular ilgini çekebilir, sanatla ilgilen.'
-                };
-                
-                const horoscope = horoscopes[zodiacName] || 'Burç yorumu hazırlanıyor...';
-                resultDiv.innerHTML = `
-                    <strong>${zodiacName} Burcu için Günlük Yorum:</strong><br><br>
-                    ${horoscope}
-                    <div style="margin-top: 15px;">
-                        <button class="paylasim-buton" onclick="shareHoroscope('${zodiacName}', '${horoscope}')">Toplulukla Paylaş</button>
-                    </div>
-                `;
-                
-                // XP KAZAN
-                addXP(10);
-            }, 1500);
-        }
-
-        // CHAT MESAJI GÖNDER
-        function sendMessage() {
-            const input = document.getElementById('chatInput');
-            const message = input.value.trim();
-            
-            if (message) {
-                addChatMessage('Kullanıcı', message, 'user');
-                input.value = '';
-                
-                // AI YANITI
-                setTimeout(() => {
-                    const aiResponses = [
-                        "Burç yorumları hakkında daha fazla bilgi verebilirim!",
-                        "Hangi burçla ilgili sorun var? Size yardımcı olayım!",
-                        "Abdullah Sarı tarafından geliştirildim! 🚀",
-                        "Günlük burç yorumları için yukarıdaki burç kartlarına tıklayın!",
-                        "Toplulukla paylaşım yaparak XP kazanabilirsiniz! ✨"
-                    ];
-                    const response = aiResponses[Math.floor(Math.random() * aiResponses.length)];
-                    addChatMessage('AI Asistan', response, 'ai');
-                }, 1000);
-                
-                // XP KAZAN
-                addXP(5);
-            }
-        }
-
-        // CHAT MESAJI EKLE
-        function addChatMessage(sender, text, type) {
-            const chatDiv = document.getElementById('chatMessages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${type}-message`;
-            messageDiv.innerHTML = `<strong>${sender}:</strong> ${text}`;
-            chatDiv.appendChild(messageDiv);
-            chatDiv.scrollTop = chatDiv.scrollHeight;
-        }
-
-        // XP SİSTEMİ
-        function addXP(amount) {
-            userData.xp += amount;
-            
-            if (userData.xp >= userData.xpNeeded) {
-                userData.level++;
-                userData.xp = userData.xp - userData.xpNeeded;
-                userData.xpNeeded = Math.floor(userData.xpNeeded * 1.5);
-                
-                // SEVİYE ATLAMA MESAJI
-                addChatMessage('Sistem', `🎉 TEBRİKLER! Seviye ${userData.level} oldunuz!`, 'ai');
-                
-                // Seviye atlama bonusu
-                userData.elmas += 10;
-                userData.yildiz += 5;
-            }
-            
-            updateDisplay();
-            saveUserData();
-        }
-
-        // MAĞAZA SİSTEMİ
-        function buyItem(item) {
-            const prices = {
-                'vip_rozet': 50,
-                'ozel_tema': 100,
-                'ai_ozellik': 200
+        // GİRİŞ YAPMIŞ KULLANICI İÇİN UI GÜNCELLE
+        function updateUIForLoggedInUser(user) {
+            // Header'ı güncelle
+            document.querySelector('.giris-butonu').innerHTML = `
+                👤 ${user.name}
+            `;
+            document.querySelector('.giris-butonu').onclick = function() {
+                showUserProfile(user);
             };
             
-            const price = prices[item];
-            
-            if (userData.elmas >= price) {
-                userData.elmas -= price;
-                userData.inventory.push(item);
-                addChatMessage('Sistem', `✅ ${item} satın alındı!`, 'ai');
-                updateDisplay();
-                saveUserData();
-            } else {
-                addChatMessage('Sistem', `❌ Yeterli elmasınız yok!`, 'ai');
-            }
-        }
-
-        // GÖRSELLERİ GÜNCELLE
-        function updateDisplay() {
-            document.getElementById('userLevel').textContent = userData.level;
-            document.getElementById('xpDisplay').textContent = `${userData.xp}/${userData.xpNeeded} XP`;
-            
-            const progressPercent = (userData.xp / userData.xpNeeded) * 100;
-            document.getElementById('levelProgress').style.width = `${progressPercent}%`;
-            
-            document.getElementById('elmasMiktar').textContent = userData.elmas;
-            document.getElementById('yildizMiktar').textContent = userData.yildiz;
-            document.getElementById('altinMiktar').textContent = userData.altin;
-        }
-
-        // PAYLAŞIM SİSTEMİ
-        function shareHoroscope(zodiac, horoscope) {
-            const postsDiv = document.getElementById('communityPosts');
-            const postDiv = document.createElement('div');
-            postDiv.className = 'message';
-            postDiv.style.background = 'rgba(255,255,255,0.05)';
-            postDiv.innerHTML = `
-                <strong>Kullanıcı:</strong> ♈ ${zodiac} yorumumu paylaşıyorum:<br>
-                ${horoscope.substring(0, 80)}...
+            // Ana içeriği göster
+            document.getElementById('mainContent').innerHTML = `
+                <div style="max-width: 800px; margin: 0 auto;">
+                    <div class="user-info">
+                        <h2>👋 Hoş geldin, ${user.name}!</h2>
+                        <p>${user.isGoogle ? '🔐 Google ile giriş yaptınız' : '🚀 Demo modundasınız'}</p>
+                        <div style="display: flex; justify-content: center; gap: 20px; margin-top: 15px;">
+                            <div>💎 ${user.diamonds}</div>
+                            <div>⭐ ${user.stars}</div>
+                            <div>🪙 ${user.gold}</div>
+                            <div>🎯 Level ${user.level}</div>
+                        </div>
+                    </div>
+                    
+                    <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 15px; margin: 20px 0;">
+                        <h2>♈ Günlük Burç Yorumu</h2>
+                        <p>Burcunu seç ve AI yorumunu al!</p>
+                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 20px 0;">
+                            ${['Koç', 'Boğa', 'İkizler', 'Yengeç', 'Aslan', 'Başak', 'Terazi', 'Akrep', 'Yay', 'Oğlak', 'Kova', 'Balık'].map(burc => `
+                                <div style="background: rgba(107,70,193,0.3); padding: 15px; border-radius: 10px; text-align: center; cursor: pointer;" onclick="getHoroscope('${burc}')">
+                                    ${getBurcIkonu(burc)} ${burc}
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 15px;">
+                        <h2>🤖 AI Asistan</h2>
+                        <p>Burçlar hakkında soru sorabilirsin!</p>
+                        <input type="text" id="aiSoru" placeholder="AI'ya soru sor..." style="width: 100%; padding: 10px; margin: 10px 0; background: rgba(255,255,255,0.1); border: 1px solid #6B46C1; border-radius: 5px; color: white;">
+                        <button onclick="aiSoruSor()" style="background: #38B2AC; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Gönder</button>
+                        <div id="aiCevap" style="margin-top: 15px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 8px;"></div>
+                    </div>
+                    
+                    <button onclick="logout()" style="background: #F56565; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-top: 20px;">
+                        🔓 Çıkış Yap
+                    </button>
+                </div>
             `;
-            postsDiv.appendChild(postDiv);
-            
-            addXP(15);
-            userData.elmas += 5; // Paylaşım bonusu
-            updateDisplay();
-            saveUserData();
         }
 
-        // GÜNLÜK BONUS KONTROLÜ
-        function checkDailyBonus() {
-            const today = new Date().toDateString();
-            const lastBonus = localStorage.getItem('lastDailyBonus');
+        // BURÇ İKONLARI
+        function getBurcIkonu(burc) {
+            const ikonlar = {
+                'Koç': '♈', 'Boğa': '♉', 'İkizler': '♊', 'Yengeç': '♋',
+                'Aslan': '♌', 'Başak': '♍', 'Terazi': '♎', 'Akrep': '♏',
+                'Yay': '♐', 'Oğlak': '♑', 'Kova': '♒', 'Balık': '♓'
+            };
+            return ikonlar[burc] || '♈';
+        }
+
+        // BURÇ YORUMU
+        function getHoroscope(burc) {
+            const yorumlar = {
+                'Koç': 'Bugün enerjin zirvede! Yeni projelere başlamak için mükemmel bir gün.',
+                'Boğa': 'Maddi konularda şanslısın. Sabırlı davran, kararlarını iyi düşün.',
+                'İkizler': 'İletişim gücün çok yüksek! Sosyal aktivitelere katıl.',
+                'Yengeç': 'Duygusal bir gündesin. Ailenle zaman geçirmek iyi gelecek.',
+                'Aslan': 'Yaratıcılığın zirvede! Kendini ifade etmekten çekinme.',
+                'Başak': 'Detaylara odaklan, organizasyon yap. Verimliliğin artacak.',
+                'Terazi': 'İlişkilerde denge önemli. Adil ol, uzlaşmacı yaklaş.',
+                'Akrep': 'Sezgilerin çok güçlü! Gizemli konulara eğil.',
+                'Yay': 'Özgürlük arayışındasın! Yeni maceralar seni bekliyor.',
+                'Oğlak': 'Kariyer odaklı bir gün. Hedeflerine odaklan.',
+                'Kova': 'Yenilikçi fikirlerle dolu! Sosyal projelerde öncü ol.',
+                'Balık': 'Hayal gücün zirvede! Sanatla ilgilen.'
+            };
             
-            if (lastBonus !== today) {
-                userData.elmas += 10;
-                userData.yildiz += 5;
-                localStorage.setItem('lastDailyBonus', today);
-                addChatMessage('Sistem', `🎁 Günlük bonusunuz: 10 Elmas ve 5 Yıldız!`, 'ai');
-                updateDisplay();
-                saveUserData();
+            alert(`♈ ${burc} Burcu Günlük Yorumu:\n\n${yorumlar[burc]}\n\n💎 10 Elmas kazandınız!`);
+            
+            // XP ve para kazan
+            const user = JSON.parse(localStorage.getItem('banabeyderler_user'));
+            user.diamonds += 10;
+            localStorage.setItem('banabeyderler_user', JSON.stringify(user));
+        }
+
+        // AI SORU
+        function aiSoruSor() {
+            const soru = document.getElementById('aiSoru').value;
+            if (!soru) return;
+            
+            const cevaplar = [
+                "Burç yorumları hakkında daha fazla bilgi verebilirim!",
+                "Hangi burçla ilgili merak ettikleriniz var?",
+                "Abdullah Sarı tarafından geliştirildim! 🚀",
+                "Günlük burç yorumlarınız için yukarıdaki burçlara tıklayın!",
+                "Burç özelliklerini merak ediyorsanız, size detaylı bilgi verebilirim!"
+            ];
+            
+            const cevap = cevaplar[Math.floor(Math.random() * cevaplar.length)];
+            document.getElementById('aiCevap').innerHTML = `<strong>AI Asistan:</strong> ${cevap}`;
+            document.getElementById('aiSoru').value = '';
+            
+            // XP kazan
+            const user = JSON.parse(localStorage.getItem('banabeyderler_user'));
+            user.diamonds += 5;
+            localStorage.setItem('banabeyderler_user', JSON.stringify(user));
+        }
+
+        // PROFİL GÖSTER
+        function showUserProfile(user) {
+            alert(`
+🤝 Profil Bilgileri:
+
+İsim: ${user.name}
+E-posta: ${user.email}
+Seviye: ${user.level}
+Elmas: 💎 ${user.diamonds}
+Yıldız: ⭐ ${user.stars}
+Altın: 🪙 ${user.gold}
+
+${user.isGoogle ? '🔐 Google Girişi' : '🚀 Demo Modu'}
+Giriş Tarihi: ${new Date(user.loginTime).toLocaleString()}
+            `);
+        }
+
+        // ÇIKIŞ
+        function logout() {
+            localStorage.removeItem('banabeyderler_user');
+            alert('Çıkış yapıldı. Tekrar görüşmek üzere! 👋');
+            location.reload();
+        }
+
+        // ESC tuşu ile modal kapatma
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                hideLoginModal();
             }
-        }
-
-        // CEO ADMIN PANEL
-        function openCEOAdmin() {
-            const password = prompt('CEO Şifresi:');
-            if (password === 'IA_2024_SpecialAccess') {
-                // CEO paneli aç
-                const ceoPanel = window.open('', 'CEO Panel', 'width=600,height=400');
-                ceoPanel.document.write(`
-                    <html>
-                    <head><title>CEO Panel - Banabeyderler</title></head>
-                    <body style="background:#0f0f23;color:white;padding:20px;">
-                        <h1>CEO Admin Panel</h1>
-                        <p>Kullanıcı Verileri:</p>
-                        <pre>${JSON.stringify(userData, null, 2)}</pre>
-                        <button onclick="window.close()">Kapat</button>
-                    </body>
-                    </html>
-                `);
-            } else if (password) {
-                alert('❌ Şifre hatalı!');
-            }
-        }
-
-        // GİRİŞ SİSTEMİ
-        function showLogin() {
-            alert('Google Giriş sistemi yakında eklenecek! 🚀\n\nŞimdilik demo modunda kullanabilirsiniz.');
-            
-            // Demo kullanıcı oluştur
-            userData.elmas += 100;
-            userData.yildiz += 50;
-            userData.altin += 25;
-            updateDisplay();
-            saveUserData();
-            
-            addChatMessage('Sistem', 'Demo modu aktif! 100 Elmas, 50 Yıldız ve 25 Altın bonusu kazandınız!', 'ai');
-        }
-
-        // LOCALSTORAGE
-        function saveUserData() {
-            localStorage.setItem('banabeyderler_user', JSON.stringify(userData));
-        }
-
-        function loadUserData() {
-            const saved = localStorage.getItem('banabeyderler_user');
-            if (saved) {
-                userData = JSON.parse(saved);
-            }
-        }
+        });
     </script>
 </body>
 </html>
