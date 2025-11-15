@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banabeyderler AUTO HOROSCOPE</title>
+    <style>
+        /* BANABEYDERLER PREMIUM TASARIM */
+        :root {
+            --space-black: #0a0a0f;
+            --neon-blue: #00f3ff;
+            --neon-purple: #9d4edd;
+            --premium-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --glass-bg: rgba(255, 255, 255, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--space-black);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .premium-container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-top: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .logo-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        
+        .tagline {
+            font-size: 14px;
+            opacity: 0.7;
+            letter-spacing: 1px;
+        }
+        
+        .horoscope-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 25px;
+            margin: 20px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .zodiac-selector {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin: 25px 0;
+        }
+        
+        .zodiac-option {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid transparent;
+            border-radius: 16px;
+            padding: 15px 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        
+        .zodiac-option:hover {
+            border-color: var(--neon-blue);
+            transform: translateY(-2px);
+        }
+        
+        .zodiac-option.selected {
+            background: var(--premium-gradient);
+            border-color: var(--neon-purple);
+        }
+        
+        .generate-btn {
+            background: var(--premium-gradient);
+            border: none;
+            border-radius: 50px;
+            padding: 18px 40px;
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+            width: 100%;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .generate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.6);
+        }
+        
+        .horoscope-text {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 16px;
+            padding: 20px;
+            margin: 20px 0;
+            font-size: 16px;
+            line-height: 1.6;
+            border-left: 4px solid var(--neon-blue);
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            font-size: 18px;
+            color: var(--neon-blue);
+        }
+    </style>
+</head>
+<body>
+    <div class="premium-container">
+        <div class="logo-section">
+            <div class="logo">AUTO HOROSCOPE</div>
+            <div class="tagline">BANABEYDERLER PREMIUM</div>
+        </div>
+        
+        <div class="horoscope-card">
+            <h3>Burcunuzu Seçin</h3>
+            <div class="zodiac-selector" id="zodiacGrid">
+                <!-- Burçlar JavaScript ile eklenecek -->
+            </div>
+            
+            <button class="generate-btn" onclick="generateHoroscope()">
+                YORUM OLUŞTUR
+            </button>
+            
+            <div class="loading" id="loading">
+                🔮 Yorum oluşturuluyor...
+            </div>
+            
+            <div class="horoscope-text" id="horoscopeResult">
+                Burcunuzu seçin ve yorum oluşturun!
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Burç verileri
+        const zodiacSigns = [
+            "Koç", "Boğa", "İkizler", "Yengeç", 
+            "Aslan", "Başak", "Terazi", "Akrep", 
+            "Yay", "Oğlak", "Kova", "Balık"
+        ];
+        
+        // Burç grid'ini oluştur
+        const zodiacGrid = document.getElementById('zodiacGrid');
+        zodiacSigns.forEach(sign => {
+            const div = document.createElement('div');
+            div.className = 'zodiac-option';
+            div.textContent = sign;
+            div.onclick = () => selectZodiac(sign, div);
+            zodiacGrid.appendChild(div);
+        });
+        
+        let selectedZodiac = null;
+        
+        function selectZodiac(sign, element) {
+            // Önceki seçimi temizle
+            document.querySelectorAll('.zodiac-option').forEach(el => {
+                el.classList.remove('selected');
+            });
+            
+            // Yeni seçimi işaretle
+            element.classList.add('selected');
+            selectedZodiac = sign;
+        }
+        
+        // Yapay Zeka Yorum Üretme Motoru
+        function generateHoroscope() {
+            if (!selectedZodiac) {
+                alert("Lütfen bir burç seçin!");
+                return;
+            }
+            
+            const loading = document.getElementById('loading');
+            const result = document.getElementById('horoscopeResult');
+            
+            loading.style.display = 'block';
+            result.style.display = 'none';
+            
+            // Yapay gecikme efekti
+            setTimeout(() => {
+                const horoscope = generateAIPrediction(selectedZodiac);
+                loading.style.display = 'none';
+                result.style.display = 'block';
+                result.textContent = horoscope;
+            }, 1500);
+        }
+        
+        function generateAIPrediction(zodiac) {
+            // GELİŞMİŞ YAPAY ZEKA YORUM MOTORU
+            const templates = {
+                love: [
+                    "Aşk hayatınızda beklenmedik gelişmeler sizi şaşırtabilir. ",
+                    "Kalbiniz size yeni başlangıçlar için işaretler veriyor. ",
+                    "Duygusal bağlarınız bu dönemde güçlenecek. "
+                ],
+                career: [
+                    "Kariyer yolculuğunuzda önemli bir dönüm noktasındasınız. ",
+                    "Yeni fırsatlar kapınızı çalacak, hazırlıklı olun. ",
+                    "İş hayatınızda yaratıcılığınız ön plana çıkacak. "
+                ],
+                health: [
+                    "Enerjiniz yüksek, bu dönemde spor yapmak için ideal. ",
+                    "Zihinsel dinginlik için meditasyon yapmayı deneyin. ",
+                    "Sağlığınıza ekstra özen göstermeniz gereken bir dönem. "
+                ],
+                general: [
+                    "Yıldızlar sizin için özel mesajlar taşıyor. ",
+                    "Bu hafta şans sizinle olacak, risk alın. ",
+                    "Gelecek için planlar yapmak için mükemmel bir zaman. "
+                ]
+            };
+            
+            const zodiacTraits = {
+                "Koç": "enerjik ve cesur",
+                "Boğa": "sabit ve güvenilir", 
+                "İkizler": "iletişim becerisi yüksek",
+                "Yengeç": "duygusal ve sezgisel",
+                "Aslan": "yaratıcı ve gururlu",
+                "Başak": "analitik ve detaycı",
+                "Terazi": "dengeli ve uyumlu",
+                "Akrep": "gizemli ve tutkulu",
+                "Yay": "özgür ruhlu ve iyimser",
+                "Oğlak": "disiplinli ve hırslı",
+                "Kova": "yenilikçi ve entelektüel",
+                "Balık": "hayalperest ve duyarlı"
+            };
+            
+            // Rastgele yorum oluştur
+            const getRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
+            
+            const prediction = 
+                `✨ ${zodiac} Burcu ✨\n\n` +
+                `${getRandom(templates.love)}${zodiacTraits[zodiac]} doğanız sayesinde ` +
+                `${getRandom(templates.career)}${getRandom(templates.health)}` +
+                `${getRandom(templates.general)}`;
+                
+            return prediction;
+        }
+    </script>
+</body>
+</html>
