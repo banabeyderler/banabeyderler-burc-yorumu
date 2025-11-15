@@ -4,14 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Banabeyderler AUTO HOROSCOPE</title>
+    
+    <!-- Google Sign-In API -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    
     <style>
-        /* BANABEYDERLER PREMIUM TASARIM */
+        /* BANABEYDERLER ULTRA PREMIUM TASARIM */
         :root {
             --space-black: #0a0a0f;
+            --deep-space: #050510;
             --neon-blue: #00f3ff;
             --neon-purple: #9d4edd;
+            --neon-pink: #ff2e8c;
+            --premium-gold: #ffd700;
+            --admin-red: #ff4444;
+            --chat-green: #00ff88;
             --premium-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.15);
         }
         
         * {
@@ -22,249 +32,478 @@
         
         body {
             font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--space-black);
+            background: var(--deep-space);
             color: white;
             min-height: 100vh;
             overflow-x: hidden;
+            position: relative;
+        }
+
+        /* ANİMASYONLU YILDIZ ARKA PLAN */
+        .stars-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* NEBULA EFEKTİ */
+        .nebula {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.15) 0%, transparent 50%);
+            z-index: -1;
+            animation: nebulaFloat 20s ease-in-out infinite;
+        }
+
+        @keyframes nebulaFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-10px, -10px) scale(1.02); }
+        }
+        
+        /* CHAT SİSTEMİ */
+        .chat-widget {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 1000;
+        }
+
+        .chat-toggle {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, var(--chat-green), var(--neon-blue));
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 6px 25px rgba(0, 255, 136, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .chat-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 30px rgba(0, 255, 136, 0.6);
+        }
+
+        .chat-container {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            width: 350px;
+            height: 500px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-container.active {
+            display: flex;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue));
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chat-title {
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .chat-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 18px;
+            font-size: 14px;
+            line-height: 1.4;
+            animation: messageSlide 0.3s ease;
+        }
+
+        @keyframes messageSlide {
+            from { transform: translateY(10px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .message.user {
+            align-self: flex-end;
+            background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+            border-bottom-right-radius: 5px;
+        }
+
+        .message.bot {
+            align-self: flex-start;
+            background: rgba(255, 255, 255, 0.1);
+            border-bottom-left-radius: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .message.typing {
+            align-self: flex-start;
+            background: rgba(255, 255, 255, 0.05);
+            font-style: italic;
+            opacity: 0.7;
+        }
+
+        .chat-input-container {
+            padding: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 12px 18px;
+            color: white;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .chat-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .chat-send {
+            background: linear-gradient(135deg, var(--chat-green), var(--neon-blue));
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .chat-send:hover {
+            transform: scale(1.1);
+        }
+
+        .quick-questions {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+            padding: 10px 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .quick-question {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 10px 15px;
+            font-size: 12px;
+            text-align: left;
+            color: rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quick-question:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
         }
         
         .premium-container {
-            max-width: 400px;
+            max-width: 420px;
             margin: 0 auto;
-            padding: 20px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            margin-top: 20px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        }
-        
-        .logo-section {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        .logo {
-            font-size: 32px;
-            font-weight: 800;
-            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
-        }
-        
-        .tagline {
-            font-size: 14px;
-            opacity: 0.7;
-            letter-spacing: 1px;
-        }
-        
-        .horoscope-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
             padding: 25px;
-            margin: 20px 0;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            border-radius: 28px;
+            border: 1px solid var(--glass-border);
+            margin-top: 25px;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
         }
-        
-        .zodiac-selector {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin: 25px 0;
-        }
-        
-        .zodiac-option {
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid transparent;
-            border-radius: 16px;
-            padding: 15px 10px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
-        }
-        
-        .zodiac-option:hover {
-            border-color: var(--neon-blue);
-            transform: translateY(-2px);
-        }
-        
-        .zodiac-option.selected {
-            background: var(--premium-gradient);
-            border-color: var(--neon-purple);
-        }
-        
-        .generate-btn {
-            background: var(--premium-gradient);
-            border: none;
-            border-radius: 50px;
-            padding: 18px 40px;
-            font-size: 18px;
-            font-weight: 700;
-            color: white;
-            cursor: pointer;
+
+        .premium-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
             width: 100%;
-            margin: 20px 0;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.1), 
+                transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            100% { left: 100%; }
         }
         
-        .generate-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.6);
-        }
-        
-        .horoscope-text {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 16px;
-            padding: 20px;
-            margin: 20px 0;
-            font-size: 16px;
-            line-height: 1.6;
-            border-left: 4px solid var(--neon-blue);
-        }
-        
-        .loading {
-            display: none;
-            text-align: center;
-            font-size: 18px;
-            color: var(--neon-blue);
-        }
+        /* ... (önceki stillerin devamı) ... */
+
     </style>
 </head>
 <body>
-    <div class="premium-container">
-        <div class="logo-section">
-            <div class="logo">AUTO HOROSCOPE</div>
-            <div class="tagline">BANABEYDERLER PREMIUM</div>
-        </div>
-        
-        <div class="horoscope-card">
-            <h3>Burcunuzu Seçin</h3>
-            <div class="zodiac-selector" id="zodiacGrid">
-                <!-- Burçlar JavaScript ile eklenecek -->
+    <!-- ANİMASYONLU ARKA PLAN -->
+    <div class="stars-background" id="starsContainer"></div>
+    <div class="nebula"></div>
+    
+    <!-- CHAT SİSTEMİ -->
+    <div class="chat-widget">
+        <button class="chat-toggle" onclick="toggleChat()">💬</button>
+        <div class="chat-container" id="chatContainer">
+            <div class="chat-header">
+                <div class="chat-title">💬 Banabeyderler Destek</div>
+                <button class="chat-close" onclick="toggleChat()">×</button>
             </div>
-            
-            <button class="generate-btn" onclick="generateHoroscope()">
-                YORUM OLUŞTUR
-            </button>
-            
-            <div class="loading" id="loading">
-                🔮 Yorum oluşturuluyor...
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot">
+                    👋 Merhaba! Ben Banabeyderler asistanıyım. Burç yorumları veya uygulama hakkında sorularınızı yanıtlayabilirim!
+                </div>
             </div>
-            
-            <div class="horoscope-text" id="horoscopeResult">
-                Burcunuzu seçin ve yorum oluşturun!
+            <div class="quick-questions">
+                <button class="quick-question" onclick="sendQuickQuestion('Bugünkü yorumumu nasıl daha detaylı alabilirim?')">
+                    🔮 Detaylı yorum nasıl alırım?
+                </button>
+                <button class="quick-question" onclick="sendQuickQuestion('Premium üyelik avantajları neler?')">
+                    💎 Premium avantajları
+                </button>
+                <button class="quick-question" onclick="sendQuickQuestion('Farklı bir burç için yorum alabilir miyim?')">
+                    ⭐ Diğer burç yorumları
+                </button>
+            </div>
+            <div class="chat-input-container">
+                <input type="text" class="chat-input" id="chatInput" placeholder="Mesajınızı yazın..." onkeypress="handleChatInput(event)">
+                <button class="chat-send" onclick="sendMessage()">➤</button>
             </div>
         </div>
     </div>
 
+    <div class="premium-container">
+        <!-- ... (önceki içeriğin devamı) ... -->
+    </div>
+
     <script>
-        // Burç verileri
-        const zodiacSigns = [
-            "Koç", "Boğa", "İkizler", "Yengeç", 
-            "Aslan", "Başak", "Terazi", "Akrep", 
-            "Yay", "Oğlak", "Kova", "Balık"
-        ];
-        
-        // Burç grid'ini oluştur
-        const zodiacGrid = document.getElementById('zodiacGrid');
-        zodiacSigns.forEach(sign => {
-            const div = document.createElement('div');
-            div.className = 'zodiac-option';
-            div.textContent = sign;
-            div.onclick = () => selectZodiac(sign, div);
-            zodiacGrid.appendChild(div);
-        });
-        
-        let selectedZodiac = null;
-        
-        function selectZodiac(sign, element) {
-            // Önceki seçimi temizle
-            document.querySelectorAll('.zodiac-option').forEach(el => {
-                el.classList.remove('selected');
-            });
+        // CHAT SİSTEMİ
+        let chatHistory = [];
+        let isChatOpen = false;
+
+        function toggleChat() {
+            const chatContainer = document.getElementById('chatContainer');
+            isChatOpen = !isChatOpen;
             
-            // Yeni seçimi işaretle
-            element.classList.add('selected');
-            selectedZodiac = sign;
-        }
-        
-        // Yapay Zeka Yorum Üretme Motoru
-        function generateHoroscope() {
-            if (!selectedZodiac) {
-                alert("Lütfen bir burç seçin!");
-                return;
+            if (isChatOpen) {
+                chatContainer.classList.add('active');
+            } else {
+                chatContainer.classList.remove('active');
             }
-            
-            const loading = document.getElementById('loading');
-            const result = document.getElementById('horoscopeResult');
-            
-            loading.style.display = 'block';
-            result.style.display = 'none';
-            
-            // Yapay gecikme efekti
-            setTimeout(() => {
-                const horoscope = generateAIPrediction(selectedZodiac);
-                loading.style.display = 'none';
-                result.style.display = 'block';
-                result.textContent = horoscope;
-            }, 1500);
         }
-        
-        function generateAIPrediction(zodiac) {
-            // GELİŞMİŞ YAPAY ZEKA YORUM MOTORU
-            const templates = {
-                love: [
-                    "Aşk hayatınızda beklenmedik gelişmeler sizi şaşırtabilir. ",
-                    "Kalbiniz size yeni başlangıçlar için işaretler veriyor. ",
-                    "Duygusal bağlarınız bu dönemde güçlenecek. "
+
+        function sendQuickQuestion(question) {
+            document.getElementById('chatInput').value = question;
+            sendMessage();
+        }
+
+        function handleChatInput(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (message === '') return;
+
+            // Kullanıcı mesajını ekle
+            addMessage(message, 'user');
+            input.value = '';
+
+            // Bot yanıtını simüle et
+            setTimeout(() => {
+                const botResponse = generateBotResponse(message);
+                addMessage(botResponse, 'bot');
+            }, 1000 + Math.random() * 2000);
+
+            // Typing efekti
+            showTypingIndicator();
+        }
+
+        function addMessage(text, sender) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            messageDiv.textContent = text;
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            // Chat history'e kaydet
+            chatHistory.push({ sender, text, timestamp: new Date() });
+        }
+
+        function showTypingIndicator() {
+            const chatMessages = document.getElementById('chatMessages');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message typing';
+            typingDiv.textContent = 'Banabeyderler yazıyor...';
+            typingDiv.id = 'typingIndicator';
+            
+            chatMessages.appendChild(typingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            // 2 saniye sonra kaldır
+            setTimeout(() => {
+                const indicator = document.getElementById('typingIndicator');
+                if (indicator) {
+                    indicator.remove();
+                }
+            }, 2000);
+        }
+
+        function generateBotResponse(userMessage) {
+            const responses = {
+                greeting: [
+                    "Merhaba! Burç yorumu uygulamamız hakkında nasıl yardımcı olabilirim? 🌟",
+                    "Selam! Banabeyderler asistanına hoş geldin. Sorularını bekliyorum! ✨",
+                    "Merhaba! Burçlar ve yorumlar hakkında konuşalım mı? 🔮"
                 ],
-                career: [
-                    "Kariyer yolculuğunuzda önemli bir dönüm noktasındasınız. ",
-                    "Yeni fırsatlar kapınızı çalacak, hazırlıklı olun. ",
-                    "İş hayatınızda yaratıcılığınız ön plana çıkacak. "
+                premium: [
+                    "💎 Premium üyelik ile: Sınırsız yorum, detaylı analizler, özel burç öngörüleri ve reklamsız deneyim kazanırsınız!",
+                    "🌟 Premium'da neler var? → Sınırsız kullanım + Detaylı yorumlar + Özel özellikler + Öncelikli destek!",
+                    "🚀 Premium'a yükselterek sınırsız burç yorumu ve özel analizlere erişin! Aylık 49.99 TL veya yıllık 399.99 TL."
                 ],
-                health: [
-                    "Enerjiniz yüksek, bu dönemde spor yapmak için ideal. ",
-                    "Zihinsel dinginlik için meditasyon yapmayı deneyin. ",
-                    "Sağlığınıza ekstra özen göstermeniz gereken bir dönem. "
+                technical: [
+                    "Teknik bir sorun mu yaşıyorsunuz? Ekibimize bildirelim! 🛠️",
+                    "Uygulama ile ilgili bir problem mi var? Hemen çözüm bulalım! 💫",
+                    "Teknik destek için: support@banabeyderler.com 📧"
                 ],
-                general: [
-                    "Yıldızlar sizin için özel mesajlar taşıyor. ",
-                    "Bu hafta şans sizinle olacak, risk alın. ",
-                    "Gelecek için planlar yapmak için mükemmel bir zaman. "
+                horoscope: [
+                    "🔮 Yeni bir burç yorumu oluşturmak için ana ekrandan burcunuzu seçip 'YORUM OLUŞTUR' butonuna tıklayın!",
+                    "⭐ Burç yorumunuzu güncellemek mi istiyorsunuz? Ana sayfada farklı bir burç seçebilir veya aynı burç için yeni yorum oluşturabilirsiniz!",
+                    "💫 Yorumlarımız yapay zeka tarafından özel olarak oluşturulur. Her seferinde benzersiz ve kişiselleştirilmiş yorumlar alırsınız!"
+                ],
+                default: [
+                    "Bu konuda daha fazla bilgi için ana ekrandaki özellikleri keşfedebilirsiniz! 🌙",
+                    "İlginiz için teşekkür ederim! Başka sorunuz var mı? ✨",
+                    "Burç yorumları hakkında daha fazla bilgi almak için uygulamayı kullanmaya devam edin! 🔮"
                 ]
             };
-            
-            const zodiacTraits = {
-                "Koç": "enerjik ve cesur",
-                "Boğa": "sabit ve güvenilir", 
-                "İkizler": "iletişim becerisi yüksek",
-                "Yengeç": "duygusal ve sezgisel",
-                "Aslan": "yaratıcı ve gururlu",
-                "Başak": "analitik ve detaycı",
-                "Terazi": "dengeli ve uyumlu",
-                "Akrep": "gizemli ve tutkulu",
-                "Yay": "özgür ruhlu ve iyimser",
-                "Oğlak": "disiplinli ve hırslı",
-                "Kova": "yenilikçi ve entelektüel",
-                "Balık": "hayalperest ve duyarlı"
-            };
-            
-            // Rastgele yorum oluştur
-            const getRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
-            
-            const prediction = 
-                `✨ ${zodiac} Burcu ✨\n\n` +
-                `${getRandom(templates.love)}${zodiacTraits[zodiac]} doğanız sayesinde ` +
-                `${getRandom(templates.career)}${getRandom(templates.health)}` +
-                `${getRandom(templates.general)}`;
-                
-            return prediction;
+
+            userMessage = userMessage.toLowerCase();
+
+            if (userMessage.includes('merhaba') || userMessage.includes('selam') || userMessage.includes('hi')) {
+                return getRandomResponse(responses.greeting);
+            } else if (userMessage.includes('premium') || userMessage.includes('üyelik') || userMessage.includes('ücret')) {
+                return getRandomResponse(responses.premium);
+            } else if (userMessage.includes('teknik') || userMessage.includes('sorun') || userMessage.includes('hata')) {
+                return getRandomResponse(responses.technical);
+            } else if (userMessage.includes('yorum') || userMessage.includes('burç') || userMessage.includes('fal')) {
+                return getRandomResponse(responses.horoscope);
+            } else {
+                return getRandomResponse(responses.default);
+            }
         }
+
+        function getRandomResponse(responses) {
+            return responses[Math.floor(Math.random() * responses.length)];
+        }
+
+        // YILDIZ ARKA PLAN OLUŞTURMA
+        function createStars() {
+            const starsContainer = document.getElementById('starsContainer');
+            const starCount = 100;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                const size = Math.random() * 3 + 1;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.animationDelay = `${Math.random() * 3}s`;
+                
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // UYGULAMA BAŞLANGICI
+        document.addEventListener('DOMContentLoaded', function() {
+            createStars();
+            // Diğer başlangıç fonksiyonları...
+        });
     </script>
 </body>
 </html>
