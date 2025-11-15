@@ -5,30 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Banabeyderler AI - Uzay Üssü</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             background: #000;
             color: white;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
             font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            height: 100vh;
         }
-        
-        .stars {
+
+        /* YILDIZLAR BACKGROUND */
+        .space-background {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><circle cx="100" cy="200" r="1" fill="white"/><circle cx="300" cy="150" r="1" fill="white"/><circle cx="500" cy="300" r="2" fill="white"/><circle cx="700" cy="100" r="1" fill="white"/><circle cx="900" cy="250" r="1" fill="white"/></svg>');
-            animation: twinkle 4s infinite;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(107, 70, 193, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(56, 178, 172, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(255, 215, 0, 0.2) 0%, transparent 50%);
         }
-        
+
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20% 30%, #fff, transparent),
+                radial-gradient(2px 2px at 40% 70%, #fff, transparent),
+                radial-gradient(1px 1px at 60% 20%, #fff, transparent),
+                radial-gradient(1px 1px at 80% 50%, #fff, transparent),
+                radial-gradient(2px 2px at 30% 80%, #fff, transparent);
+            animation: twinkle 3s infinite alternate;
+        }
+
         @keyframes twinkle {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
+            0% { opacity: 0.3; }
+            100% { opacity: 1; }
         }
-        
+
+        /* ANA CONTAINER */
         .login-container {
             position: absolute;
             top: 50%;
@@ -36,36 +60,328 @@
             transform: translate(-50%, -50%);
             text-align: center;
             z-index: 10;
+            width: 90%;
+            max-width: 600px;
         }
-        
+
+        /* HOŞ GELDİN YAZISI - LED EFEKT */
         .welcome-text {
-            font-size: 3rem;
-            background: linear-gradient(45deg, #6B46C1, #38B2AC, #FFD700);
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #6B46C1, #38B2AC, #FFD700, #FF6B6B);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: glow 2s ease-in-out infinite alternate;
+            animation: textGlow 2s ease-in-out infinite alternate;
+            text-shadow: 0 0 10px currentColor;
+            line-height: 1.2;
         }
-        
-        @keyframes glow {
-            from { text-shadow: 0 0 10px #6B46C1; }
-            to { text-shadow: 0 0 20px #38B2AC, 0 0 30px #6B46C1; }
+
+        @keyframes textGlow {
+            0% { 
+                text-shadow: 0 0 10px #6B46C1, 0 0 20px #6B46C1;
+                filter: hue-rotate(0deg);
+            }
+            100% { 
+                text-shadow: 0 0 20px #38B2AC, 0 0 30px #38B2AC, 0 0 40px #38B2AC;
+                filter: hue-rotate(45deg);
+            }
+        }
+
+        /* AÇIKLAMA */
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 50px;
+            color: #aaa;
+            animation: fadeIn 2s ease-in;
+        }
+
+        /* GÜNCEL BİLGİLER - LED PANEL */
+        .info-panel {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            animation: slideUp 1s ease-out;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 15px 0;
+            font-size: 1.1rem;
+        }
+
+        .led-date {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #FFD700;
+            text-shadow: 0 0 10px #FFD700;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* BURÇ ANİMASYONU */
+        .zodiac-animation {
+            font-size: 4rem;
+            margin: 20px 0;
+            animation: float 3s ease-in-out infinite, rotate 10s linear infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-10px) scale(1.1); }
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .zodiac-name {
+            font-size: 1.5rem;
+            color: #38B2AC;
+            text-shadow: 0 0 10px #38B2AC;
+            animation: colorShift 3s infinite alternate;
+        }
+
+        @keyframes colorShift {
+            0% { color: #38B2AC; }
+            100% { color: #6B46C1; }
+        }
+
+        /* GİRİŞ BUTONLARI */
+        .login-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 40px;
+        }
+
+        .login-btn {
+            background: linear-gradient(135deg, #6B46C1, #38B2AC);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(107, 70, 193, 0.4);
+        }
+
+        .demo-btn {
+            background: linear-gradient(135deg, #FFD700, #FF6B6B);
+        }
+
+        /* ANİMASYONLAR */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* GEZEGEN EFEKTLERİ */
+        .planet {
+            position: absolute;
+            border-radius: 50%;
+            animation: orbit 20s linear infinite;
+        }
+
+        .planet-1 {
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle at 30% 30%, #6B46C1, #000);
+            top: 10%;
+            left: 10%;
+            animation-duration: 25s;
+        }
+
+        .planet-2 {
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle at 30% 30%, #38B2AC, #000);
+            bottom: 20%;
+            right: 15%;
+            animation-duration: 30s;
+        }
+
+        @keyframes orbit {
+            0% { transform: rotate(0deg) translateX(150px) rotate(0deg); }
+            100% { transform: rotate(360deg) translateX(150px) rotate(-360deg); }
         }
     </style>
 </head>
 <body>
-    <div class="stars"></div>
-    
+    <!-- UZAY BACKGROUND -->
+    <div class="space-background">
+        <div class="stars"></div>
+        <div class="planet planet-1"></div>
+        <div class="planet planet-2"></div>
+    </div>
+
+    <!-- ANA İÇERİK -->
     <div class="login-container">
-        <h1 class="welcome-text">🌙 BURÇ EVRENİNE HOŞ GELDİN</h1>
-        <p>Yıldızların senin için ne söylediğini keşfet...</p>
+        <!-- HOŞ GELDİN YAZISI -->
+        <h1 class="welcome-text">BURÇ<br>EVRENİNE<br>HOŞ GELDİN</h1>
         
-        <!-- Google Giriş Butonu -->
-        <!-- Demo Giriş Butonu -->
-        
-        <div class="daily-info">
-            <p>📅 Bugün: <span id="todayDate"></span></p>
-            <p>♈ Günün Burcu: <span id="dailyZodiac"></span></p>
+        <p class="subtitle">Yıldızların senin için ne söylediğini keşfet...</p>
+
+        <!-- GÜNCEL BİLGİLER LED PANEL -->
+        <div class="info-panel">
+            <div class="info-item">
+                <span>📅 Bugün:</span>
+                <span class="led-date" id="todayDate">Yükleniyor...</span>
+            </div>
+            <div class="info-item">
+                <span>♈ Günün Burcu:</span>
+                <span class="zodiac-name" id="dailyZodiac">Hesaplanıyor...</span>
+            </div>
+        </div>
+
+        <!-- BURÇ ANİMASYONU -->
+        <div class="zodiac-animation" id="zodiacAnimation">♈</div>
+
+        <!-- GİRİŞ BUTONLARI -->
+        <div class="login-buttons">
+            <button class="login-btn" onclick="googleLogin()">
+                🔐 Google ile Giriş
+            </button>
+            <button class="login-btn demo-btn" onclick="demoLogin()">
+                🚀 Demo Giriş
+            </button>
         </div>
     </div>
+
+    <script>
+        // BUGÜNÜN TARİHİ - LED STİL
+        function updateDateTime() {
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            const dateStr = now.toLocaleDateString('tr-TR', options);
+            document.getElementById('todayDate').textContent = dateStr.toUpperCase();
+        }
+
+        // GÜNÜN BURCU HESAPLAMA
+        function getDailyZodiac() {
+            const today = new Date();
+            const day = today.getDate();
+            const month = today.getMonth() + 1;
+            
+            const zodiacs = [
+                { name: "KOVA", icon: "♒", start: [1, 20], end: [2, 18] },
+                { name: "BALIK", icon: "♓", start: [2, 19], end: [3, 20] },
+                { name: "KOÇ", icon: "♈", start: [3, 21], end: [4, 19] },
+                { name: "BOĞA", icon: "♉", start: [4, 20], end: [5, 20] },
+                { name: "İKİZLER", icon: "♊", start: [5, 21], end: [6, 20] },
+                { name: "YENGEÇ", icon: "♋", start: [6, 21], end: [7, 22] },
+                { name: "ASLAN", icon: "♌", start: [7, 23], end: [8, 22] },
+                { name: "BAŞAK", icon: "♍", start: [8, 23], end: [9, 22] },
+                { name: "TERAZİ", icon: "♎", start: [9, 23], end: [10, 22] },
+                { name: "AKREP", icon: "♏", start: [10, 23], end: [11, 21] },
+                { name: "YAY", icon: "♐", start: [11, 22], end: [12, 21] },
+                { name: "OĞLAK", icon: "♑", start: [12, 22], end: [1, 19] }
+            ];
+
+            for (let zodiac of zodiacs) {
+                const [startMonth, startDay] = zodiac.start;
+                const [endMonth, endDay] = zodiac.end;
+                
+                if ((month === startMonth && day >= startDay) || 
+                    (month === endMonth && day <= endDay) ||
+                    (startMonth > endMonth && (month > startMonth || month < endMonth))) {
+                    return zodiac;
+                }
+            }
+            
+            return { name: "KOÇ", icon: "♈" }; // Varsayılan
+        }
+
+        // ANİMASYONLU BURÇ GÖSTERİMİ
+        function animateZodiac() {
+            const zodiac = getDailyZodiac();
+            const animationEl = document.getElementById('zodiacAnimation');
+            const nameEl = document.getElementById('dailyZodiac');
+            
+            // İkon ve ismi güncelle
+            animationEl.textContent = zodiac.icon;
+            nameEl.textContent = zodiac.name;
+            
+            // Rastgele renk efekti
+            const colors = ['#6B46C1', '#38B2AC', '#FFD700', '#FF6B6B', '#4ECDC4'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            animationEl.style.color = randomColor;
+        }
+
+        // GİRİŞ FONKSİYONLARI
+        function googleLogin() {
+            alert('🔐 Google girişi yakında aktif!');
+            // Google login kodu buraya gelecek
+        }
+
+        function demoLogin() {
+            const userData = {
+                name: 'Uzay Kaşifi',
+                email: 'demo@banabeyderler.com',
+                level: 1,
+                diamonds: 100,
+                isDemo: true
+            };
+            
+            localStorage.setItem('banabeyderler_user', JSON.stringify(userData));
+            alert('🚀 Demo evrene giriş yapıldı!');
+            window.location.href = 'dashboard.html';
+        }
+
+        // SAYFA YÜKLENDİĞİNDE
+        document.addEventListener('DOMContentLoaded', function() {
+            updateDateTime();
+            animateZodiac();
+            
+            // Her saniye tarihi güncelle
+            setInterval(updateDateTime, 1000);
+            
+            // Her 5 saniyede bir burç animasyonunu yenile
+            setInterval(animateZodiac, 5000);
+        });
+
+        // Kullanıcı zaten giriş yapmışsa dashboard'a yönlendir
+        window.addEventListener('load', function() {
+            const user = localStorage.getItem('banabeyderler_user');
+            if (user) {
+                window.location.href = 'dashboard.html';
+            }
+        });
+    </script>
 </body>
 </html>
