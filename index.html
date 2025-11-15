@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Burç Evreni - Yıldızların Sırrını Keşfet</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <!-- Yıldızlar için container -->
     <div class="stars"></div>
     
     <div class="container">
@@ -22,5 +24,31 @@
     </div>
 
     <script src="auth.js"></script>
+    <script>
+        // Yıldız oluşturma
+        function createStars() {
+            const starsContainer = document.querySelector('.stars');
+            for (let i = 0; i < 150; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = `${Math.random() * 100}vw`;
+                star.style.top = `${Math.random() * 100}vh`;
+                star.style.width = `${Math.random() * 3 + 1}px`;
+                star.style.height = star.style.width;
+                star.style.animationDelay = `${Math.random() * 5}s`;
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Sayfa yüklendiğinde
+        document.addEventListener('DOMContentLoaded', function() {
+            createStars();
+            
+            // Zaten giriş yapmışsa horoscope'a yönlendir
+            if (localStorage.getItem('banabeyderler_user')) {
+                window.location.href = 'horoscope.html';
+            }
+        });
+    </script>
 </body>
 </html>
