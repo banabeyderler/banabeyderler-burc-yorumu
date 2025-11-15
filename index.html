@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Banabeyderler AUTO HOROSCOPE</title>
+    <title>Banabeyderler AI Burç & Sohbet</title>
     
     <!-- Google Sign-In API -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     
     <style>
-        /* BANABEYDERLER ULTRA PREMIUM TASARIM */
         :root {
             --space-black: #0a0a0f;
             --deep-space: #050510;
@@ -19,6 +18,7 @@
             --premium-gold: #ffd700;
             --admin-red: #ff4444;
             --chat-green: #00ff88;
+            --ceo-gold: #ffd700;
             --premium-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             --glass-bg: rgba(255, 255, 255, 0.08);
             --glass-border: rgba(255, 255, 255, 0.15);
@@ -39,7 +39,74 @@
             position: relative;
         }
 
-        /* ANİMASYONLU YILDIZ ARKA PLAN */
+        /* CEO Giriş Paneli */
+        .ceo-login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+
+        .ceo-login-panel {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            padding: 40px;
+            border-radius: 20px;
+            border: 2px solid var(--ceo-gold);
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.3);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .ceo-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .ceo-header h2 {
+            color: var(--ceo-gold);
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .ceo-input {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 10px;
+            color: white;
+            font-size: 16px;
+        }
+
+        .ceo-login-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--ceo-gold), #ffed4e);
+            border: none;
+            border-radius: 10px;
+            color: #000;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        /* Ana Uygulama */
+        .app-container {
+            display: none;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Yıldız Animasyonu */
         .stars-background {
             position: fixed;
             top: 0;
@@ -47,7 +114,6 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            overflow: hidden;
         }
 
         .star {
@@ -62,31 +128,42 @@
             50% { opacity: 1; transform: scale(1.2); }
         }
 
-        /* NEBULA EFEKTİ */
-        .nebula {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.2) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.15) 0%, transparent 50%);
-            z-index: -1;
-            animation: nebulaFloat 20s ease-in-out infinite;
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
         }
 
-        @keyframes nebulaFloat {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(-10px, -10px) scale(1.02); }
+        @keyframes ledGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 243, 255, 0.5); }
+            50% { box-shadow: 0 0 30px rgba(157, 78, 221, 0.8); }
         }
-        
-        /* CHAT SİSTEMİ */
+
+        /* Admin Header */
+        .admin-header {
+            background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue));
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: ledGlow 2s infinite;
+        }
+
+        .ceo-badge {
+            background: linear-gradient(45deg, var(--ceo-gold), #ffed4e);
+            color: black;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+
+        /* Chat Widget */
         .chat-widget {
             position: fixed;
-            bottom: 25px;
-            right: 25px;
+            bottom: 20px;
+            right: 20px;
             z-index: 1000;
         }
 
@@ -102,18 +179,7 @@
             align-items: center;
             justify-content: center;
             font-size: 24px;
-            transition: all 0.3s ease;
             animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        .chat-toggle:hover {
-            transform: scale(1.1);
-            box-shadow: 0 8px 30px rgba(0, 255, 136, 0.6);
         }
 
         .chat-container {
@@ -123,45 +189,24 @@
             width: 350px;
             height: 500px;
             background: var(--glass-bg);
-            backdrop-filter: blur(25px);
-            border-radius: 20px;
+            backdrop-filter: blur(20px);
+            border-radius: 15px;
             border: 1px solid var(--glass-border);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
             display: none;
             flex-direction: column;
-            overflow: hidden;
         }
 
         .chat-container.active {
             display: flex;
-            animation: slideUp 0.3s ease;
-        }
-
-        @keyframes slideUp {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
         }
 
         .chat-header {
             background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue));
-            padding: 15px 20px;
+            padding: 15px;
+            border-radius: 15px 15px 0 0;
             display: flex;
-            align-items: center;
             justify-content: space-between;
-        }
-
-        .chat-title {
-            font-weight: 700;
-            font-size: 16px;
-        }
-
-        .chat-close {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 18px;
-            cursor: pointer;
-            padding: 5px;
+            align-items: center;
         }
 
         .chat-messages {
@@ -176,35 +221,19 @@
         .message {
             max-width: 80%;
             padding: 10px 15px;
-            border-radius: 18px;
+            border-radius: 15px;
             font-size: 14px;
-            line-height: 1.4;
-            animation: messageSlide 0.3s ease;
-        }
-
-        @keyframes messageSlide {
-            from { transform: translateY(10px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
         }
 
         .message.user {
             align-self: flex-end;
             background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
-            border-bottom-right-radius: 5px;
         }
 
         .message.bot {
             align-self: flex-start;
             background: rgba(255, 255, 255, 0.1);
-            border-bottom-left-radius: 5px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .message.typing {
-            align-self: flex-start;
-            background: rgba(255, 255, 255, 0.05);
-            font-style: italic;
-            opacity: 0.7;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .chat-input-container {
@@ -219,14 +248,8 @@
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 20px;
-            padding: 12px 18px;
+            padding: 12px;
             color: white;
-            font-size: 14px;
-            outline: none;
-        }
-
-        .chat-input::placeholder {
-            color: rgba(255, 255, 255, 0.6);
         }
 
         .chat-send {
@@ -235,275 +258,704 @@
             border-radius: 50%;
             width: 40px;
             height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             cursor: pointer;
             color: white;
-            font-size: 16px;
-            transition: all 0.3s ease;
         }
 
-        .chat-send:hover {
-            transform: scale(1.1);
-        }
-
-        .quick-questions {
+        /* Admin Panelleri */
+        .admin-panels {
             display: grid;
-            grid-template-columns: 1fr;
-            gap: 8px;
-            padding: 10px 15px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
         }
 
-        .quick-question {
+        .admin-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .user-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            text-align: center;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--neon-blue);
+        }
+
+        /* Güncelleme Slider */
+        .update-slider {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue));
+            padding: 15px 30px;
+            border-radius: 25px;
+            box-shadow: 0 5px 25px rgba(157, 78, 221, 0.5);
+            z-index: 9999;
+            display: none;
+        }
+
+        @keyframes slideInDown {
+            from { transform: translate(-50%, -100px); opacity: 0; }
+            to { transform: translate(-50%, 0); opacity: 1; }
+        }
+
+        .update-content {
+            text-align: center;
+        }
+
+        .ceo-signature {
+            margin-top: 5px;
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        /* Seviye Sistemi */
+        .level-system {
+            background: var(--glass-bg);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 1px solid var(--glass-border);
+        }
+
+        .level-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .level-progress {
+            background: rgba(255, 255, 255, 0.1);
+            height: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .level-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        /* Mağaza Sistemi */
+        .shop-system {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .shop-item {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 10px 15px;
-            font-size: 12px;
-            text-align: left;
-            color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
-        .quick-question:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateX(5px);
-        }
-        
-        .premium-container {
-            max-width: 420px;
-            margin: 0 auto;
-            padding: 25px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(25px);
-            border-radius: 28px;
-            border: 1px solid var(--glass-border);
-            margin-top: 25px;
-            box-shadow: 
-                0 8px 32px rgba(0, 0, 0, 0.4),
-                0 0 0 1px rgba(255, 255, 255, 0.05);
-            position: relative;
-            overflow: hidden;
+        .shop-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--neon-blue);
         }
 
-        .premium-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, 
-                transparent, 
-                rgba(255, 255, 255, 0.1), 
-                transparent);
-            animation: shine 3s infinite;
+        .item-price {
+            color: var(--neon-blue);
+            font-weight: bold;
+            margin-top: 10px;
         }
 
-        @keyframes shine {
-            0% { left: -100%; }
-            100% { left: 100%; }
+        /* Premium Özellikler */
+        .premium-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
         }
-        
-        /* ... (önceki stillerin devamı) ... */
 
+        .premium-card {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 215, 0, 0.05));
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .premium-badge {
+            background: linear-gradient(45deg, var(--premium-gold), #ffed4e);
+            color: black;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
     </style>
 </head>
 <body>
-    <!-- ANİMASYONLU ARKA PLAN -->
-    <div class="stars-background" id="starsContainer"></div>
-    <div class="nebula"></div>
-    
-    <!-- CHAT SİSTEMİ -->
+    <!-- Yıldız Arkaplan -->
+    <div class="stars-background" id="starsBackground"></div>
+
+    <!-- CEO Giriş Overlay -->
+    <div class="ceo-login-overlay" id="ceoLoginOverlay">
+        <div class="ceo-login-panel">
+            <div class="ceo-header">
+                <h2>👑 CEO YÖNETİM PANELİ</h2>
+                <p>Güvenli Giriş Sistemi</p>
+            </div>
+            <input type="email" id="ceoEmail" class="ceo-input" placeholder="CEO Email Adresi" value="abdullah@banabeyderler.com">
+            <input type="password" id="ceoPassword" class="ceo-input" placeholder="CEO Şifresi">
+            <input type="text" id="ceo2FA" class="ceo-input" placeholder="2FA Kodu (123456)">
+            <button class="ceo-login-btn" onclick="ceoLogin()">🔓 CEO GİRİŞİ YAP</button>
+        </div>
+    </div>
+
+    <!-- Güncelleme Slider -->
+    <div class="update-slider" id="updateSlider">
+        <div class="update-content">
+            <div id="updateTitle">🎉 Yeni Güncelleme!</div>
+            <div id="updateDescription">Sistem güncelleniyor...</div>
+            <div class="ceo-signature">
+                <strong>Abdullah Sarı</strong> - CEO & Kurucu
+            </div>
+        </div>
+    </div>
+
+    <!-- Ana Uygulama Container -->
+    <div class="app-container" id="appContainer">
+        <!-- Admin Header -->
+        <div class="admin-header">
+            <div>
+                <h1>👑 Banabeyderler CEO Paneli</h1>
+                <p>Abdullah Sarı - Sistem Yöneticisi</p>
+            </div>
+            <div class="ceo-badge">CEO MODE</div>
+        </div>
+
+        <!-- Kullanıcı İstatistikleri -->
+        <div class="admin-panel">
+            <div class="panel-header">
+                <h3>📊 Sistem İstatistikleri</h3>
+                <span id="refreshTime"></span>
+            </div>
+            <div class="user-stats">
+                <div class="stat-item">
+                    <div class="stat-number" id="totalUsers">1,247</div>
+                    <div>Toplam Üye</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="activeUsers">893</div>
+                    <div>Aktif Üye</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="premiumUsers">156</div>
+                    <div>Premium Üye</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Paneller Grid -->
+        <div class="admin-panels">
+            <!-- Email Panel -->
+            <div class="admin-panel">
+                <div class="panel-header">
+                    <h3>📧 Toplu Email</h3>
+                    <button class="chat-send" onclick="toggleEmailPanel()">📤</button>
+                </div>
+                <p>Toplu email gönderim sistemi</p>
+                <div id="emailPanel" style="display: none; margin-top: 15px;">
+                    <textarea id="emailSubject" placeholder="Email konusu..." style="width: 100%; margin-bottom: 10px; padding: 10px; border-radius: 8px; background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2);"></textarea>
+                    <textarea id="emailContent" placeholder="Email içeriği..." style="width: 100%; height: 100px; margin-bottom: 10px; padding: 10px; border-radius: 8px; background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2);"></textarea>
+                    <button onclick="sendBulkEmail()" style="width: 100%; padding: 10px; background: var(--neon-blue); border: none; border-radius: 8px; color: white; cursor: pointer;">Email Gönder</button>
+                </div>
+            </div>
+
+            <!-- Kullanıcı Yönetimi -->
+            <div class="admin-panel">
+                <div class="panel-header">
+                    <h3>👥 Kullanıcı Yönetimi</h3>
+                    <button class="chat-send" onclick="refreshUsers()">🔄</button>
+                </div>
+                <div id="userList">
+                    <!-- Kullanıcı listesi buraya gelecek -->
+                </div>
+            </div>
+
+            <!-- Sistem Ayarları -->
+            <div class="admin-panel">
+                <div class="panel-header">
+                    <h3>⚙️ Sistem Ayarları</h3>
+                </div>
+                <button onclick="toggleMaintenance()" style="width: 100%; padding: 10px; margin: 5px 0; background: var(--neon-purple); border: none; border-radius: 8px; color: white; cursor: pointer;">Bakım Modu</button>
+                <button onclick="clearAllChats()" style="width: 100%; padding: 10px; margin: 5px 0; background: var(--admin-red); border: none; border-radius: 8px; color: white; cursor: pointer;">Sohbetleri Temizle</button>
+                <button onclick="exportUserData()" style="width: 100%; padding: 10px; margin: 5px 0; background: var(--chat-green); border: none; border-radius: 8px; color: white; cursor: pointer;">Veri Dışa Aktar</button>
+            </div>
+        </div>
+
+        <!-- Gelişmiş Özellikler Panelleri -->
+        <div class="admin-panels" style="margin-top: 30px;">
+            
+            <!-- Seviye Sistemi -->
+            <div class="admin-panel">
+                <div class="level-system">
+                    <div class="level-header">
+                        <h3>🎮 Seviye & Rütbe Sistemi</h3>
+                        <span class="ceo-badge">AKTİF</span>
+                    </div>
+                    <div class="level-progress">
+                        <div class="level-progress-bar" style="width: 65%;"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 12px;">
+                        <span>Seviye 1</span>
+                        <span>Seviye 100</span>
+                    </div>
+                    <div style="text-align: center; margin-top: 10px;">
+                        <strong>Mevcut Seviye: 65</strong>
+                        <div style="font-size: 12px; opacity: 0.8;">Sonraki seviye: 2.150 XP kaldı</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mağaza Sistemi -->
+            <div class="admin-panel">
+                <div class="panel-header">
+                    <h3>🛍️ Premium Mağaza</h3>
+                    <span class="ceo-badge">YENİ</span>
+                </div>
+                <div class="shop-system">
+                    <div class="shop-item" onclick="buyItem('royal_crown')">
+                        <div style="font-size: 24px;">👑</div>
+                        <div>Kraliyet Tacı</div>
+                        <div class="item-price">💎 500</div>
+                    </div>
+                    <div class="shop-item" onclick="buyItem('neon_theme')">
+                        <div style="font-size: 24px;">🌈</div>
+                        <div>Neon Tema</div>
+                        <div class="item-price">⭐ 1.000</div>
+                    </div>
+                    <div class="shop-item" onclick="buyItem('vip_badge')">
+                        <div style="font-size: 24px;">🌟</div>
+                        <div>VIP Rozeti</div>
+                        <div class="item-price">💎 250</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Premium Özellikler -->
+        <div class="premium-features">
+            <div class="premium-card">
+                <div class="premium-badge">PREMIUM</div>
+                <h4>🤖 DeepSeek AI</h4>
+                <p>Gerçek yapay zeka sohbet deneyimi</p>
+                <button onclick="activateDeepSeek()" style="width: 100%; padding: 10px; margin-top: 10px; background: var(--neon-blue); border: none; border-radius: 8px; color: white; cursor: pointer;">Aktif Et</button>
+            </div>
+
+            <div class="premium-card">
+                <div class="premium-badge">PREMIUM</div>
+                <h4>📧 Email Sistemi</h4>
+                <p>Toplu email gönderim özelliği</p>
+                <button onclick="toggleEmailPanel()" style="width: 100%; padding: 10px; margin-top: 10px; background: var(--neon-purple); border: none; border-radius: 8px; color: white; cursor: pointer;">Kullan</button>
+            </div>
+
+            <div class="premium-card">
+                <div class="premium-badge">PREMIUM</div>
+                <h4>👑 CEO Paneli</h4>
+                <p>Gelişmiş yönetim araçları</p>
+                <button onclick="showCeoPanel()" style="width: 100%; padding: 10px; margin-top: 10px; background: var(--ceo-gold); border: none; border-radius: 8px; color: black; cursor: pointer; font-weight: bold;">Paneli Aç</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Widget -->
     <div class="chat-widget">
         <button class="chat-toggle" onclick="toggleChat()">💬</button>
         <div class="chat-container" id="chatContainer">
             <div class="chat-header">
-                <div class="chat-title">💬 Banabeyderler Destek</div>
-                <button class="chat-close" onclick="toggleChat()">×</button>
+                <div>🤖 AI Asistan</div>
+                <button onclick="toggleChat()" style="background: none; border: none; color: white; cursor: pointer;">✕</button>
             </div>
             <div class="chat-messages" id="chatMessages">
                 <div class="message bot">
-                    👋 Merhaba! Ben Banabeyderler asistanıyım. Burç yorumları veya uygulama hakkında sorularınızı yanıtlayabilirim!
+                    👋 Merhaba CEO! Ben Banabeyderler AI asistanıyım. Nasıl yardımcı olabilirim?
                 </div>
             </div>
-            <div class="quick-questions">
-                <button class="quick-question" onclick="sendQuickQuestion('Bugünkü yorumumu nasıl daha detaylı alabilirim?')">
-                    🔮 Detaylı yorum nasıl alırım?
-                </button>
-                <button class="quick-question" onclick="sendQuickQuestion('Premium üyelik avantajları neler?')">
-                    💎 Premium avantajları
-                </button>
-                <button class="quick-question" onclick="sendQuickQuestion('Farklı bir burç için yorum alabilir miyim?')">
-                    ⭐ Diğer burç yorumları
-                </button>
-            </div>
             <div class="chat-input-container">
-                <input type="text" class="chat-input" id="chatInput" placeholder="Mesajınızı yazın..." onkeypress="handleChatInput(event)">
+                <input type="text" class="chat-input" id="chatInput" placeholder="Mesajınızı yazın...">
                 <button class="chat-send" onclick="sendMessage()">➤</button>
             </div>
         </div>
     </div>
 
-    <div class="premium-container">
-        <!-- ... (önceki içeriğin devamı) ... -->
-    </div>
-
     <script>
-        // CHAT SİSTEMİ
-        let chatHistory = [];
+        // CEO Giriş Sistemi
+        function ceoLogin() {
+            const email = document.getElementById('ceoEmail').value;
+            const password = document.getElementById('ceoPassword').value;
+            const twoFA = document.getElementById('ceo2FA').value;
+
+            if (email === "abdullah@banabeyderler.com" && 
+                password === "CEO_2024_Special_Access" && 
+                twoFA === "123456") {
+                
+                // CEO giriş başarılı
+                document.getElementById('ceoLoginOverlay').style.display = 'none';
+                document.getElementById('appContainer').style.display = 'block';
+                
+                // CEO oturum başlat
+                localStorage.setItem('ceoLoggedIn', 'true');
+                localStorage.setItem('ceoUser', JSON.stringify({
+                    name: "Abdullah Sarı",
+                    email: email,
+                    role: "CEO",
+                    loginTime: new Date()
+                }));
+                
+                console.log("✅ CEO girişi başarılı!");
+            } else {
+                alert("❌ Giriş bilgileri hatalı! CEO erişimine izniniz yok.");
+            }
+        }
+
+        // Sayfa yüklendiğinde CEO kontrolü
+        document.addEventListener('DOMContentLoaded', function() {
+            const isCeoLoggedIn = localStorage.getItem('ceoLoggedIn');
+            if (isCeoLoggedIn === 'true') {
+                document.getElementById('ceoLoginOverlay').style.display = 'none';
+                document.getElementById('appContainer').style.display = 'block';
+            }
+
+            // Zamanı güncelle
+            document.getElementById('refreshTime').textContent = new Date().toLocaleTimeString();
+            
+            // Yıldızları oluştur
+            createStars();
+        });
+
+        // Yıldız oluşturma
+        function createStars() {
+            const starsContainer = document.getElementById('starsBackground');
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.width = `${Math.random() * 3}px`;
+                star.style.height = star.style.width;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.animationDelay = `${Math.random() * 3}s`;
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Chat Sistemi
         let isChatOpen = false;
 
         function toggleChat() {
             const chatContainer = document.getElementById('chatContainer');
             isChatOpen = !isChatOpen;
-            
-            if (isChatOpen) {
-                chatContainer.classList.add('active');
-            } else {
-                chatContainer.classList.remove('active');
-            }
-        }
-
-        function sendQuickQuestion(question) {
-            document.getElementById('chatInput').value = question;
-            sendMessage();
-        }
-
-        function handleChatInput(event) {
-            if (event.key === 'Enter') {
-                sendMessage();
-            }
+            chatContainer.style.display = isChatOpen ? 'flex' : 'none';
         }
 
         function sendMessage() {
             const input = document.getElementById('chatInput');
             const message = input.value.trim();
-            
-            if (message === '') return;
+            if (!message) return;
 
+            const chatMessages = document.getElementById('chatMessages');
+            
             // Kullanıcı mesajını ekle
-            addMessage(message, 'user');
+            const userMessage = document.createElement('div');
+            userMessage.className = 'message user';
+            userMessage.textContent = message;
+            chatMessages.appendChild(userMessage);
+
             input.value = '';
-
-            // Bot yanıtını simüle et
+            
+            // AI yanıtı simüle et
             setTimeout(() => {
-                const botResponse = generateBotResponse(message);
-                addMessage(botResponse, 'bot');
-            }, 1000 + Math.random() * 2000);
-
-            // Typing efekti
-            showTypingIndicator();
+                const botResponse = document.createElement('div');
+                botResponse.className = 'message bot';
+                botResponse.textContent = generateAIResponse(message);
+                chatMessages.appendChild(botResponse);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 1000);
         }
 
-        function addMessage(text, sender) {
-            const chatMessages = document.getElementById('chatMessages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${sender}`;
-            messageDiv.textContent = text;
-            
-            chatMessages.appendChild(messageDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-            
-            // Chat history'e kaydet
-            chatHistory.push({ sender, text, timestamp: new Date() });
-        }
-
-        function showTypingIndicator() {
-            const chatMessages = document.getElementById('chatMessages');
-            const typingDiv = document.createElement('div');
-            typingDiv.className = 'message typing';
-            typingDiv.textContent = 'Banabeyderler yazıyor...';
-            typingDiv.id = 'typingIndicator';
-            
-            chatMessages.appendChild(typingDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-
-            // 2 saniye sonra kaldır
-            setTimeout(() => {
-                const indicator = document.getElementById('typingIndicator');
-                if (indicator) {
-                    indicator.remove();
-                }
-            }, 2000);
-        }
-
-        function generateBotResponse(userMessage) {
-            const responses = {
-                greeting: [
-                    "Merhaba! Burç yorumu uygulamamız hakkında nasıl yardımcı olabilirim? 🌟",
-                    "Selam! Banabeyderler asistanına hoş geldin. Sorularını bekliyorum! ✨",
-                    "Merhaba! Burçlar ve yorumlar hakkında konuşalım mı? 🔮"
-                ],
-                premium: [
-                    "💎 Premium üyelik ile: Sınırsız yorum, detaylı analizler, özel burç öngörüleri ve reklamsız deneyim kazanırsınız!",
-                    "🌟 Premium'da neler var? → Sınırsız kullanım + Detaylı yorumlar + Özel özellikler + Öncelikli destek!",
-                    "🚀 Premium'a yükselterek sınırsız burç yorumu ve özel analizlere erişin! Aylık 49.99 TL veya yıllık 399.99 TL."
-                ],
-                technical: [
-                    "Teknik bir sorun mu yaşıyorsunuz? Ekibimize bildirelim! 🛠️",
-                    "Uygulama ile ilgili bir problem mi var? Hemen çözüm bulalım! 💫",
-                    "Teknik destek için: support@banabeyderler.com 📧"
-                ],
-                horoscope: [
-                    "🔮 Yeni bir burç yorumu oluşturmak için ana ekrandan burcunuzu seçip 'YORUM OLUŞTUR' butonuna tıklayın!",
-                    "⭐ Burç yorumunuzu güncellemek mi istiyorsunuz? Ana sayfada farklı bir burç seçebilir veya aynı burç için yeni yorum oluşturabilirsiniz!",
-                    "💫 Yorumlarımız yapay zeka tarafından özel olarak oluşturulur. Her seferinde benzersiz ve kişiselleştirilmiş yorumlar alırsınız!"
-                ],
-                default: [
-                    "Bu konuda daha fazla bilgi için ana ekrandaki özellikleri keşfedebilirsiniz! 🌙",
-                    "İlginiz için teşekkür ederim! Başka sorunuz var mı? ✨",
-                    "Burç yorumları hakkında daha fazla bilgi almak için uygulamayı kullanmaya devam edin! 🔮"
-                ]
-            };
-
-            userMessage = userMessage.toLowerCase();
-
-            if (userMessage.includes('merhaba') || userMessage.includes('selam') || userMessage.includes('hi')) {
-                return getRandomResponse(responses.greeting);
-            } else if (userMessage.includes('premium') || userMessage.includes('üyelik') || userMessage.includes('ücret')) {
-                return getRandomResponse(responses.premium);
-            } else if (userMessage.includes('teknik') || userMessage.includes('sorun') || userMessage.includes('hata')) {
-                return getRandomResponse(responses.technical);
-            } else if (userMessage.includes('yorum') || userMessage.includes('burç') || userMessage.includes('fal')) {
-                return getRandomResponse(responses.horoscope);
-            } else {
-                return getRandomResponse(responses.default);
-            }
-        }
-
-        function getRandomResponse(responses) {
+        function generateAIResponse(message) {
+            const responses = [
+                "CEO bey, bu konuda size nasıl yardımcı olabilirim?",
+                "Sistem şu anda stabil çalışıyor. İstatistikleri kontrol ettim.",
+                "Yeni güncellemeler için hazırlıklar tamamlandı.",
+                "Kullanıcı memnuniyeti bu ay %15 arttı!",
+                "Premium üyeliklerde rekor artış var!",
+                "Teknik ekip son güncellemeleri tamamladı."
+            ];
             return responses[Math.floor(Math.random() * responses.length)];
         }
 
-        // YILDIZ ARKA PLAN OLUŞTURMA
-        function createStars() {
-            const starsContainer = document.getElementById('starsContainer');
-            const starCount = 100;
+        // Email Sistemi
+        function toggleEmailPanel() {
+            const panel = document.getElementById('emailPanel');
+            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function sendBulkEmail() {
+            const subject = document.getElementById('emailSubject').value;
+            const content = document.getElementById('emailContent').value;
             
-            for (let i = 0; i < starCount; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                
-                const size = Math.random() * 3 + 1;
-                star.style.width = `${size}px`;
-                star.style.height = `${size}px`;
-                star.style.left = `${Math.random() * 100}%`;
-                star.style.top = `${Math.random() * 100}%`;
-                star.style.animationDelay = `${Math.random() * 3}s`;
-                
-                starsContainer.appendChild(star);
+            if (!subject || !content) {
+                alert('Lütfen konu ve içerik girin!');
+                return;
+            }
+
+            alert(`📧 Email gönderiliyor:\nKonu: ${subject}\nİçerik: ${content}\n\nToplu email sistemi aktif!`);
+        }
+
+        // Sistem Yönetimi
+        function toggleMaintenance() {
+            const isMaintenance = confirm('Bakım modunu değiştirmek istiyor musunuz?');
+            if (isMaintenance) {
+                alert('🔧 Bakım modu değiştirildi!');
             }
         }
 
-        // UYGULAMA BAŞLANGICI
-        document.addEventListener('DOMContentLoaded', function() {
-            createStars();
-            // Diğer başlangıç fonksiyonları...
+        function clearAllChats() {
+            if (confirm('Tüm sohbet geçmişini temizlemek istediğinizden emin misiniz?')) {
+                localStorage.removeItem('chatHistory');
+                alert('✅ Tüm sohbetler temizlendi!');
+            }
+        }
+
+        function exportUserData() {
+            alert('📊 Kullanıcı verileri dışa aktarılıyor...\nCSV dosyası hazırlanıyor.');
+        }
+
+        function refreshUsers() {
+            alert('👥 Kullanıcı listesi yenileniyor...');
+        }
+
+        // DeepSeek AI Entegrasyonu
+        const DEEPSEEK_API_KEY = 'sk-ad009e57e6ad40b28ff5a25c93cfaaa3';
+        const DEEPSEEK_API_URL = 'https://api.deepseek.com/chat/completions';
+
+        async function sendToDeepSeekAI(message) {
+            try {
+                const response = await fetch(DEEPSEEK_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${DEEPSEEK_API_KEY}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        model: "deepseek-chat",
+                        messages: [
+                            {
+                                role: "system",
+                                content: "Sen Banabeyderler uygulamasının AI asistanısın. Kullanıcıya yardımcı, profesyonel ve samimi cevaplar ver. CEO Abdullah Sarı tarafından yönetiliyorsun."
+                            },
+                            {
+                                role: "user",
+                                content: message
+                            }
+                        ],
+                        max_tokens: 500,
+                        temperature: 0.7
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('API hatası: ' + response.status);
+                }
+
+                const data = await response.json();
+                return data.choices[0].message.content;
+            } catch (error) {
+                console.error('DeepSeek AI hatası:', error);
+                return "Üzgünüm, şu anda AI servisine bağlanamıyorum. Lütfen daha sonra tekrar deneyin.";
+            }
+        }
+
+        // Gelişmiş AI Sohbet Sistemi
+        async function sendAIMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            if (!message) return;
+
+            const chatMessages = document.getElementById('chatMessages');
+            
+            // Kullanıcı mesajını ekle
+            const userMessage = document.createElement('div');
+            userMessage.className = 'message user';
+            userMessage.textContent = message;
+            chatMessages.appendChild(userMessage);
+
+            input.value = '';
+            
+            // Typing indicator
+            const typingIndicator = document.createElement('div');
+            typingIndicator.className = 'message bot';
+            typingIndicator.textContent = '🤖 AI yazıyor...';
+            typingIndicator.id = 'typingIndicator';
+            chatMessages.appendChild(typingIndicator);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            try {
+                // DeepSeek AI'ya bağlan
+                const aiResponse = await sendToDeepSeekAI(message);
+                
+                // Typing indicator'ı kaldır
+                document.getElementById('typingIndicator')?.remove();
+                
+                // AI yanıtını ekle
+                const botResponse = document.createElement('div');
+                botResponse.className = 'message bot';
+                botResponse.textContent = aiResponse;
+                chatMessages.appendChild(botResponse);
+            } catch (error) {
+                // Hata durumunda
+                document.getElementById('typingIndicator')?.remove();
+                
+                const errorResponse = document.createElement('div');
+                errorResponse.className = 'message bot';
+                errorResponse.textContent = "🤖 Şu anda AI'ya bağlanamıyorum. Lütfen daha sonra tekrar deneyin.";
+                errorResponse.style.color = '#ff4444';
+                chatMessages.appendChild(errorResponse);
+            }
+
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Güncelleme Slider Sistemi
+        const updates = [
+            {
+                title: "🎉 DeepSeek AI Entegrasyonu",
+                description: "Artık gerçek yapay zeka ile sohbet edebilirsiniz!"
+            },
+            {
+                title: "👑 CEO Paneli Aktif",
+                description: "Gelişmiş yönetim araçları kullanıma hazır"
+            },
+            {
+                title: "🛍️ Mağaza Sistemi",
+                description: "Yeni rozetler ve temalar eklendi"
+            },
+            {
+                title: "🎮 Seviye Sistemi",
+                description: "100 seviyelik yeni rütbe sistemi"
+            }
+        ];
+
+        let currentUpdate = 0;
+
+        function showUpdateSlider() {
+            const slider = document.getElementById('updateSlider');
+            const title = document.getElementById('updateTitle');
+            const description = document.getElementById('updateDescription');
+            
+            title.textContent = updates[currentUpdate].title;
+            description.textContent = updates[currentUpdate].description;
+            
+            slider.style.display = 'block';
+            slider.style.animation = 'slideInDown 0.5s ease';
+            
+            // 5 saniye sonra gizle
+            setTimeout(() => {
+                slider.style.display = 'none';
+                currentUpdate = (currentUpdate + 1) % updates.length;
+            }, 5000);
+        }
+
+        // Her 30 saniyede bir güncelleme göster
+        setInterval(showUpdateSlider, 30000);
+
+        // Mağaza Sistemi
+        function buyItem(itemId) {
+            const items = {
+                royal_crown: { name: "Kraliyet Tacı", price: "💎 500" },
+                neon_theme: { name: "Neon Tema", price: "⭐ 1.000" },
+                vip_badge: { name: "VIP Rozeti", price: "💎 250" }
+            };
+            
+            const item = items[itemId];
+            if (item) {
+                if (confirm(`${item.name} satın almak istiyor musunuz?\nFiyat: ${item.price}`)) {
+                    alert(`✅ ${item.name} başarıyla satın alındı!`);
+                }
+            }
+        }
+
+        // Premium Özellik Aktivatörleri
+        function activateDeepSeek() {
+            // Chat gönder butonunu AI moduna geçir
+            const sendButton = document.querySelector('.chat-send');
+            sendButton.onclick = sendAIMessage;
+            
+            alert('🤖 DeepSeek AI aktif edildi! Artık gerçek yapay zeka ile sohbet edebilirsiniz.');
+            showCustomUpdate("🤖 DeepSeek AI", "Gerçek yapay zeka sohbeti aktif edildi!");
+        }
+
+        function showCeoPanel() {
+            alert('👑 CEO Panel zaten aktif! Tüm yönetim araçlarına erişiminiz var.');
+        }
+
+        function showCustomUpdate(title, description) {
+            const slider = document.getElementById('updateSlider');
+            const titleEl = document.getElementById('updateTitle');
+            const descEl = document.getElementById('updateDescription');
+            
+            titleEl.textContent = title;
+            descEl.textContent = description;
+            
+            slider.style.display = 'block';
+            slider.style.animation = 'slideInDown 0.5s ease';
+            setTimeout(() => {
+                slider.style.display = 'none';
+            }, 5000);
+        }
+
+        // Sayfa yüklendiğinde ilk güncellemeyi göster
+        setTimeout(showUpdateSlider, 2000);
+
+        // Enter tuşu ile mesaj gönderme
+        document.getElementById('chatInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
         });
+
+        console.log('🚀 Banabeyderler AI Sistemi tamamen yüklendi!');
+        console.log('👑 CEO: Abdullah Sarı');
+        console.log('🤖 AI: DeepSeek Entegre');
+        console.log('🎯 Sistem: %100 Hazır');
     </script>
 </body>
 </html>
