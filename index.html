@@ -3,23 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Burç Evreni - Yıldızların Sırrını Keşfet</title>
+    <title>CosmicChat.live - Canlı Burç Sohbeti</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- Yıldızlar için container -->
     <div class="stars"></div>
     
     <div class="container">
         <div class="logo">
-            <h1>Burç Evreni</h1>
+            <h1>CosmicChat</h1>
             <p>Google hesabınla giriş yap ve yıldızların sırrını keşfet</p>
         </div>
         
         <button class="google-btn" onclick="googleLogin()">
             <i class="fab fa-google"></i>
             Google ile Giriş Yap
+        </button>
+
+        <!-- TEST BUTONU -->
+        <button onclick="testLogin()" class="google-btn" style="background: #6B46C1; margin-top: 15px;">
+            <i class="fas fa-rocket"></i>
+            Test İçin Hemen Başla
         </button>
     </div>
 
@@ -28,24 +33,34 @@
         // Yıldız oluşturma
         function createStars() {
             const starsContainer = document.querySelector('.stars');
-            for (let i = 0; i < 150; i++) {
+            for (let i = 0; i < 100; i++) {
                 const star = document.createElement('div');
                 star.className = 'star';
                 star.style.left = `${Math.random() * 100}vw`;
                 star.style.top = `${Math.random() * 100}vh`;
-                star.style.width = `${Math.random() * 3 + 1}px`;
+                star.style.width = `${Math.random() * 2 + 1}px`;
                 star.style.height = star.style.width;
                 star.style.animationDelay = `${Math.random() * 5}s`;
                 starsContainer.appendChild(star);
             }
         }
 
-        // Sayfa yüklendiğinde
+        // Test girişi
+        function testLogin() {
+            localStorage.setItem('cosmicchat_user', JSON.stringify({
+                name: "Cosmic Kullanıcı",
+                email: "user@cosmicchat.live",
+                isGoogle: true,
+                loginTime: new Date().toISOString()
+            }));
+            window.location.href = 'horoscope.html';
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             createStars();
             
-            // Zaten giriş yapmışsa horoscope'a yönlendir
-            if (localStorage.getItem('banabeyderler_user')) {
+            // Zaten giriş yapmışsa
+            if (localStorage.getItem('cosmicchat_user')) {
                 window.location.href = 'horoscope.html';
             }
         });
